@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-My research interest includes continuum robots. I have published more than 0 papers <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>).
+My research interest includes continuum robots. I have published more than 0 papers <a href='https://scholar.google.com/citations?user=oEPuCTIAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=oEPuCTIAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>).
 
 
 # 🔥 News
@@ -27,6 +27,7 @@ My research interest includes continuum robots. I have published more than 0 pap
 
 <div class='paper-box-text' markdown="1">
 [Variable-gain control for continuum robots based on velocity sensitivity](10.1016/j.mechmachtheory.2021.104618)
+  
 **Xu Zhang**, Yue Liu, David T. Branson, Chenghao Yang, Jian S. Dai, Rongjie Kang
 </div>
 
