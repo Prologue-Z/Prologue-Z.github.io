@@ -21,7 +21,7 @@ My research interest includes continuum robots. I have published more than 0 pap
 
 
 # 🔥 News
-- *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- None 😂
 
 # 📝 Publications 
 
