@@ -29,6 +29,11 @@ My research interest includes continuum robots. I have published more than 0 pap
   
 **Xu Zhang**, Yue Liu, David T. Branson, Chenghao Yang, Jian S. Dai, Rongjie Kang
 </div>
+<div class='paper-box-text' markdown="1">
+[An adaptive lumped-mass dynamic model and its control application for continuum robots](10.1016/j.mechmachtheory.2024.105736)
+  
+**Xu Zhang**, Chenghao Yang, Zhibin Song, Mojtaba A. Khanesar, David T Branson, Jian S. Dai, Rongjie Kang
+</div>
 
 
 # 🎖 Honors and Awards
