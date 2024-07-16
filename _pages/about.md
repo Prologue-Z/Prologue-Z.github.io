@@ -27,9 +27,11 @@ My research interest includes continuum robots. I have published more than 0 pap
 <div class='paper-box-text' markdown="1">
 
 `MMT` [Variable-gain control for continuum robots based on velocity sensitivity](10.1016/j.mechmachtheory.2021.104618)
+
 **Xu Zhang**, Yue Liu, David T. Branson, Chenghao Yang, Jian S. Dai, Rongjie Kang
 
 `MMT` [An adaptive lumped-mass dynamic model and its control application for continuum robots](10.1016/j.mechmachtheory.2024.105736)
+
 **Xu Zhang**, Chenghao Yang, Zhibin Song, Mojtaba A. Khanesar, David T Branson, Jian S. Dai, Rongjie Kang
 </div>
 
