@@ -12,7 +12,6 @@
 | **Leader** | 任务分配、最终决策 | 技术实现 | 方案选择 |
 | **内容专家** | 学术内容撰写 | 主题配置 | 内容质量 |
 | **前端专家** | 主题配置、样式 | 内容撰写 | 技术选型 |
-| **媒体专家** | 图片视频处理 | 内容策划 | 媒体质量 |
 | **Reviewer** | 质量把关 | 方案设计 | 评审通过/否决 |
 
 ---
@@ -65,7 +64,6 @@ Leader 决策 → 用户确认 → 部署
 | Leader | ✅ 已配置 | `agents/leader.md` |
 | 内容专家 | ✅ 已配置 | `agents/content-expert.md` |
 | 前端专家 | ✅ 已配置 | `agents/frontend-expert.md` |
-| 媒体专家 | ✅ 已配置 | `agents/media-expert.md` |
 | Reviewer | ✅ 已配置 | `agents/reviewer.md` |
 
 ---
