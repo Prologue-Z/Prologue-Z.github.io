@@ -35,36 +35,127 @@ Leader 确认
 部署上线
 ```
 
+### 3. 媒体处理流程
+
+```
+用户提供素材
+    ↓
+媒体专家处理
+    ↓
+内容专家审核
+    ↓
+Leader 确认
+    ↓
+上传使用
+```
+
+### 4. 日常更新流程
+
+```
+Leader 检查进度
+    ↓
+分配任务给专家
+    ↓
+专家完成任务
+    ↓
+Reviewer 审查
+    ↓
+Leader 部署
+```
+
 ---
 
-## 🔧 技术流程
+## 🔄 常用 Workflow
 
-### 添加博客文章
+### WF-001: 添加新页面
 
 ```bash
-# 1. 创建新文章
-hexo new post "文章标题"
+# 1. Leader 创建任务
+# 2. 内容专家撰写内容
+# 3. 前端专家配置导航
+# 4. Reviewer 审查
+# 5. Leader 部署
 
-# 2. 编辑文章
-# 编辑 source/_posts/文章标题.md
+# 创建新页面
+hexo new page "page-name"
 
-# 3. 预览
-hexo server
+# 编辑内容
+vim source/page-name/index.md
 
-# 4. 部署
+# 配置导航
+vim source/_config.cactus.yml
+
+# 部署
 ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
 ```
 
-### 修改页面内容
+### WF-002: 发布新博客
 
 ```bash
-# 1. 编辑页面文件
-# 例如：source/about.md
+# 1. 内容专家撰写
+# 2. Reviewer 审查
+# 3. Leader 部署
 
-# 2. 预览
+# 创建新文章
+hexo new post "文章标题"
+
+# 编辑文章
+vim source/_posts/文章标题.md
+
+# 本地预览
 hexo server
 
-# 3. 部署
+# 部署
+ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
+```
+
+### WF-003: 主题配置变更
+
+```bash
+# 1. 前端专家提出方案
+# 2. Leader 确认
+# 3. 前端专家实施
+# 4. Reviewer 测试
+# 5. Leader 部署
+
+# 编辑主题配置
+vim source/_config.cactus.yml
+
+# 本地预览
+hexo server
+
+# 部署
+ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
+```
+
+### WF-004: 内容更新
+
+```bash
+# 1. 内容专家更新
+# 2. Reviewer 审查
+# 3. Leader 部署
+
+# 编辑页面
+vim source/about.md
+
+# 本地预览
+hexo server
+
+# 部署
+ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
+```
+
+### WF-005: 紧急修复
+
+```bash
+# 1. Leader 确认问题
+# 2. 专家修复
+# 3. Leader 直接部署
+
+# 快速修复
+vim source/xxx.md
+
+# 立即部署
 ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
 ```
 

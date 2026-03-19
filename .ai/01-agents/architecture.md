@@ -60,13 +60,13 @@ Leader 决策 → 用户确认 → 部署
 
 ## 🤖 当前配置
 
-| 角色 | 状态 | 备注 |
+| 角色 | 状态 | 配置 |
 |------|------|------|
-| Leader | ⏳ 待配置 | |
-| 内容专家 | ⏳ 待配置 | |
-| 前端专家 | ⏳ 待配置 | |
-| 媒体专家 | ⏳ 待配置 | |
-| Reviewer | ⏳ 待配置 | |
+| Leader | ✅ 已配置 | `agents/leader.md` |
+| 内容专家 | ✅ 已配置 | `agents/content-expert.md` |
+| 前端专家 | ✅ 已配置 | `agents/frontend-expert.md` |
+| 媒体专家 | ✅ 已配置 | `agents/media-expert.md` |
+| Reviewer | ✅ 已配置 | `agents/reviewer.md` |
 
 ---
 
