@@ -1,0 +1,32 @@
+# Cactus Theme Configuration
+
+# Navigation
+nav:
+  home: /
+  about: /about/
+  publications: /publications/
+  projects: /projects/
+  honors: /honors/
+  blog: /archives/
+
+# Social links
+social_links:
+  github: https://github.com/Prologue-Z
+  googlescholar: https://scholar.google.com/citations?user=oEPuCTIAAAAJ
+  orcid: https://orcid.org/0000-0002-0845-693X
+  email: mailto:tju_zhangxu@tju.edu.cn
+
+# Color scheme: dark, light, classic, white
+colorscheme: light
+
+# Logo
+logo:
+  enabled: true
+  width: 50
+  height: 50
+  url: /images/logo.png
+
+# Posts overview
+posts_overview:
+  show_all_posts: false
+  post_count: 5
