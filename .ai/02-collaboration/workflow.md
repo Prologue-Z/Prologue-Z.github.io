@@ -145,6 +145,29 @@ vim source/xxx.md
 ssh-agent bash -c 'ssh-add ~/.ssh/hexo-deploy-new && hexo clean && hexo generate && hexo deploy'
 ```
 
+### WF-006: 配置文件维护（新增！）
+
+```markdown
+# 实时记录（对话中）
+1. Leader 监听对话
+2. 识别关键信息（纠正、偏好、决策）
+3. 立即更新相关配置文件
+4. 回复用户
+
+# 定期整理（会话结束前）
+1. 检查决策日志 - decisions.md
+2. 更新进度记录 - progress.md
+3. 优化配置文件 - 删除冗余
+4. 归档对话 - discussions/
+5. 更新 START.md - 确保准确
+
+# 维护原则
+- 简洁：删除冗余、重复内容
+- 精准：信息准确、无歧义
+- 完整：关键决策不丢失
+- 可追溯：重要决策保留背景
+```
+
 ---
 
 ## 📊 阶段确认
