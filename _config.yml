@@ -5,7 +5,32 @@
 # Site
 title: ZhangXu
 subtitle: PhD Candidate in Robotics @ Tianjin University
-description: Personal homepage of ZhangXu - Research, Publications, and Technical Blog
+description: |
+  # 👋 张旭 (ZhangXu)
+  
+  ## PhD Candidate in Robotics
+  
+  **Tianjin University, Tianjin, China**
+  
+  ---
+  
+  ## 📧 Contact
+  
+  - **Email**: [tju_zhangxu@tju.edu.cn](mailto:tju_zhangxu@tju.edu.cn)
+  - **GitHub**: [@Prologue-Z](https://github.com/Prologue-Z)
+  - **Google Scholar**: [My Profile](https://scholar.google.com/citations?user=oEPuCTIAAAAJ)
+  - **ORCID**: [0000-0002-0845-693X](https://orcid.org/0000-0002-0845-693X)
+  
+  ---
+  
+  ## 🔬 Research Focus
+  
+  My research lies at the intersection of **robotics** and **machine learning**, with a focus on:
+  
+  1. **Continuum Robotics** - Modeling, control, and motion planning for soft/continuum robots
+  2. **Reinforcement Learning** - Deep RL for robotic manipulation and locomotion
+  3. **Motion Planning** - Trajectory optimization in constrained environments
+  4. **Sim-to-Real Transfer** - Bridging the gap between simulation and real-world deployment
 keywords: robotics, continuum robot, reinforcement learning, motion planning, PhD, Tianjin University
 author: ZhangXu
 language: en
@@ -91,5 +116,5 @@ theme: cactus
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com-personal-homepage:Prologue-Z/Prologue-Z.github.io.git
+  repo: git@github.com-hexo-deploy:Prologue-Z/Prologue-Z.github.io.git
   branch: gh-pages
