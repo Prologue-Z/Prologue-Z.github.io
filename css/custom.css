@@ -424,9 +424,8 @@ table {
    只应用于博客文章详情页和项目详情页
    ======================================== */
 
-/* 博客文章详情页 */
-.article.type-post .post,
-.single-post .post {
+/* 博客文章详情页 - 使用 article 标签包裹 .post */
+article.post {
   background: #fff !important;
   padding: 2rem !important;
   border-radius: 8px !important;
@@ -434,9 +433,8 @@ table {
   margin-bottom: 2rem !important;
 }
 
-/* 项目详情页 */
-.page-template-projects .post,
-.project-page .post {
+/* 项目详情页 - 使用 article 标签包裹 .post */
+article.post {
   background: #fff !important;
   padding: 2rem !important;
   border-radius: 8px !important;
@@ -445,30 +443,21 @@ table {
 }
 
 /* 博客文章标题区域 */
-.article.type-post .post header,
-.single-post .post header,
-.page-template-projects .post header,
-.project-page .post header {
+article.post header {
   border-bottom: 2px solid #1e3a8a !important;
   padding-bottom: 1rem !important;
   margin-bottom: 1.5rem !important;
 }
 
 /* 博客文章内容区域 */
-.article.type-post .post .content,
-.single-post .post .content,
-.page-template-projects .post .content,
-.project-page .post .content {
+article.post .content {
   background: #fafafa !important;
   padding: 1.5rem !important;
   border-radius: 6px !important;
 }
 
 /* 博客文章元信息 */
-.article.type-post .post .meta,
-.single-post .post .meta,
-.page-template-projects .post .meta,
-.project-page .post .meta {
+article.post .meta {
   background: #f5f5f5 !important;
   padding: 0.8rem !important;
   border-radius: 4px !important;
@@ -476,10 +465,7 @@ table {
 }
 
 /* 博客文章引用块 */
-.article.type-post .post blockquote,
-.single-post .post blockquote,
-.page-template-projects .post blockquote,
-.project-page .post blockquote {
+article.post blockquote {
   background: #f9f9f9 !important;
   padding: 1rem !important;
   margin: 1.5rem 0 !important;
@@ -487,24 +473,15 @@ table {
 }
 
 /* 博客文章代码块 */
-.article.type-post .post pre,
-.article.type-post .post code,
-.single-post .post pre,
-.single-post .post code,
-.page-template-projects .post pre,
-.page-template-projects .post code,
-.project-page .post pre,
-.project-page .post code {
+article.post pre,
+article.post code {
   background: #f5f5f5 !important;
   border: 1px solid #ddd !important;
   border-radius: 4px !important;
 }
 
 /* 博客文章图片 */
-.article.type-post .post img,
-.single-post .post img,
-.page-template-projects .post img,
-.project-page .post img {
+article.post img {
   border-radius: 6px !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
   margin: 1.5rem auto !important;
@@ -513,18 +490,9 @@ table {
 }
 
 /* 博客文章章节标题 */
-.article.type-post .post h2,
-.article.type-post .post h3,
-.article.type-post .post h4,
-.single-post .post h2,
-.single-post .post h3,
-.single-post .post h4,
-.page-template-projects .post h2,
-.page-template-projects .post h3,
-.page-template-projects .post h4,
-.project-page .post h2,
-.project-page .post h3,
-.project-page .post h4 {
+article.post h2,
+article.post h3,
+article.post h4 {
   margin-top: 2rem !important;
   margin-bottom: 1rem !important;
   padding-bottom: 0.5rem !important;
@@ -532,14 +500,8 @@ table {
 }
 
 /* 博客文章列表项 */
-.article.type-post .post ul,
-.article.type-post .post ol,
-.single-post .post ul,
-.single-post .post ol,
-.page-template-projects .post ul,
-.page-template-projects .post ol,
-.project-page .post ul,
-.project-page .post ol {
+article.post ul,
+article.post ol {
   background: #fafafa !important;
   padding: 1rem 2rem !important;
   border-radius: 4px !important;
