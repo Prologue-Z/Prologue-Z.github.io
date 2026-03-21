@@ -424,8 +424,9 @@ table {
    只应用于博客文章详情页和项目详情页
    ======================================== */
 
-/* 博客文章详情页 - 使用 article 标签包裹 .post */
-article.post {
+/* 博客文章详情页和项目详情页 */
+.single-post article.post,
+.single-page article.post {
   background: #fff !important;
   padding: 2rem !important;
   border-radius: 8px !important;
@@ -433,55 +434,53 @@ article.post {
   margin-bottom: 2rem !important;
 }
 
-/* 项目详情页 - 使用 article 标签包裹 .post */
-article.post {
-  background: #fff !important;
-  padding: 2rem !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-  margin-bottom: 2rem !important;
-}
-
-/* 博客文章标题区域 */
-article.post header {
+/* 标题区域 */
+.single-post article.post header,
+.single-page article.post header {
   border-bottom: 2px solid #1e3a8a !important;
   padding-bottom: 1rem !important;
   margin-bottom: 1.5rem !important;
 }
 
-/* 博客文章内容区域 */
-article.post .content {
+/* 内容区域 */
+.single-post article.post .content,
+.single-page article.post .content {
   background: #fafafa !important;
   padding: 1.5rem !important;
   border-radius: 6px !important;
 }
 
-/* 博客文章元信息 */
-article.post .meta {
+/* 元信息 */
+.single-post article.post .meta,
+.single-page article.post .meta {
   background: #f5f5f5 !important;
   padding: 0.8rem !important;
   border-radius: 4px !important;
   font-size: 0.9rem !important;
 }
 
-/* 博客文章引用块 */
-article.post blockquote {
+/* 引用块 */
+.single-post article.post blockquote,
+.single-page article.post blockquote {
   background: #f9f9f9 !important;
   padding: 1rem !important;
   margin: 1.5rem 0 !important;
   border-radius: 4px !important;
 }
 
-/* 博客文章代码块 */
-article.post pre,
-article.post code {
+/* 代码块 */
+.single-post article.post pre,
+.single-post article.post code,
+.single-page article.post pre,
+.single-page article.post code {
   background: #f5f5f5 !important;
   border: 1px solid #ddd !important;
   border-radius: 4px !important;
 }
 
-/* 博客文章图片 */
-article.post img {
+/* 图片 */
+.single-post article.post img,
+.single-page article.post img {
   border-radius: 6px !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
   margin: 1.5rem auto !important;
@@ -489,19 +488,24 @@ article.post img {
   max-width: 100% !important;
 }
 
-/* 博客文章章节标题 */
-article.post h2,
-article.post h3,
-article.post h4 {
+/* 章节标题 */
+.single-post article.post h2,
+.single-post article.post h3,
+.single-post article.post h4,
+.single-page article.post h2,
+.single-page article.post h3,
+.single-page article.post h4 {
   margin-top: 2rem !important;
   margin-bottom: 1rem !important;
   padding-bottom: 0.5rem !important;
   border-bottom: 1px solid #eee !important;
 }
 
-/* 博客文章列表项 */
-article.post ul,
-article.post ol {
+/* 列表项 */
+.single-post article.post ul,
+.single-post article.post ol,
+.single-page article.post ul,
+.single-page article.post ol {
   background: #fafafa !important;
   padding: 1rem 2rem !important;
   border-radius: 4px !important;
