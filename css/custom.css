@@ -1,0 +1,456 @@
+/* Custom styles for wider content */
+
+/* Override the default max-width */
+.max-width {
+  max-width: 65rem !important; /* ~1040px, much wider than default 39rem (~624px) */
+}
+
+/* Make paragraphs wider */
+#about, #writing, #projects {
+  max-width: 65rem;
+}
+
+/* ========================================
+   Homepage Layout - Sidebar Design
+   ======================================== */
+
+/* Override theme container for homepage */
+body.h-card > .content {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+.homepage-layout {
+  display: flex;
+  gap: 3rem;
+  max-width: 65rem;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+  width: 280px;
+}
+
+.sidebar-content {
+  background: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Avatar */
+.avatar-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Logo - make it circular and force override */
+#header #logo {
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  width: 50px !important;
+  height: 50px !important;
+}
+
+/* Profile Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-header .name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+/* Info List */
+.info-list {
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.info-item i {
+  width: 18px;
+  color: #888;
+}
+
+/* Contact Info */
+.contact-info {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0.5rem;
+  min-width: 50px;
+}
+
+.contact-item a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  color: #666;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-decoration: none;
+}
+
+.contact-item a:hover {
+  background: #1e3a8a;  /* 深蓝色 */
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.contact-item i {
+  color: inherit;
+}
+
+.contact-label {
+  font-size: 0.6rem;
+  color: #888;
+  margin-top: 0.3rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Google Scholar 特殊处理：分两行 */
+.contact-item:nth-child(3) .contact-label {
+  white-space: normal;
+  max-width: 50px;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: #666;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.social-icon:hover {
+  background: #1e3a8a;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+/* Bio */
+.bio {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.content-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1e3a8a;
+}
+
+.section-content {
+  line-height: 1.7;
+  color: #444;
+}
+
+.section-content h3 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.8rem 0;
+  color: #333;
+}
+
+.section-content ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.section-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .homepage-layout {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .sidebar {
+    flex: none;
+    width: 100%;
+    position: static;
+  }
+  
+  .sidebar-content {
+    max-width: 100%;
+  }
+  
+  .avatar {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-layout {
+    padding: 1rem 0;
+  }
+  
+  .sidebar-content {
+    padding: 1.5rem;
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .profile-header .name {
+    font-size: 1.3rem;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Adjust container padding for better use of space */
+.content {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Responsive: keep it readable on tablets */
+@media (max-width: 900px) {
+  .max-width {
+    max-width: 90% !important;
+  }
+}
+
+/* Responsive: mobile-friendly */
+@media (max-width: 480px) {
+  .max-width {
+    max-width: 100% !important;
+  }
+  .content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ========================================
+   Global Theme Color Override - 深蓝色主题
+   ======================================== */
+
+/* 导航菜单链接 */
+#header #nav a {
+  color: #1e3a8a !important;  /* 深蓝色 */
+}
+
+#header #nav a:hover {
+  color: #1e40af !important;  /* 亮蓝色 */
+}
+
+/* 导航菜单竖线分隔符 */
+#header #nav li:not(:last-child)::after {
+  background-color: #1e3a8a !important;  /* 深蓝色竖线 */
+}
+
+/* ========================================
+   全局样式优化 - 移除所有非超链接的下划线和蓝色
+   ======================================== */
+
+/* 所有普通文本 - 黑色，无下划线 */
+body, p, li, td, th, span, div {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+/* 标题 - 黑色，无下划线 */
+h1, h2, h3, h4, h5, h6 {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+/* 标题中的粗体 - 黑色，无下划线 */
+h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong {
+  color: #333 !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+}
+
+/* 真正的超链接 - 保留蓝色和单下划线 */
+a {
+  color: #1e3a8a !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid #1e3a8a !important;
+}
+
+a:hover {
+  color: #d14d72 !important;
+  border-bottom-color: #d14d72 !important;
+}
+
+/* 导航菜单链接 - 无下划线，黑色 */
+#header #nav a,
+#footer nav a {
+  text-decoration: none !important;
+  color: #333 !important;
+}
+
+#header #nav a:hover,
+#footer nav a:hover {
+  color: #1e3a8a !important;
+}
+
+/* 侧边栏标题 - 黑色，无下划线 */
+.section-title {
+  color: #333 !important;
+  text-decoration: none !important;
+  border-bottom: 2px solid #1e3a8a !important;
+}
+
+/* 专利和论文表格中的文字 - 黑色 */
+table td, table th {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+/* 粗体文字 - 黑色加粗，无下划线 */
+strong, b {
+  color: #333 !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+}
+
+/* 项目符号列表 - 黑色 */
+ul li, ol li {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+/* 引用块 - 黑色 */
+blockquote {
+  color: #333 !important;
+  border-left-color: #1e3a8a !important;
+}
+
+/* 代码块 - 保持原样 */
+code, pre {
+  background-color: #f5f5f5 !important;
+  color: #333 !important;
+}
+
+/* 表格边框 - 浅灰色 */
+table {
+  border-color: #ddd !important;
+}
+
+/* 标签和分类 - 黑色粗体 */
+.tag, .category {
+  color: #333 !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+
+/* 页脚链接 */
+#footer a {
+  color: #1e3a8a !important;
+}
+
+#footer a:hover {
+  color: #1e40af !important;
+}
+
+/* 所有标题颜色 */
+h1, h2, h3, h4, h5, h6 {
+  color: #1e3a8a !important;
+}
+
+/* 引用符号和引用块 */
+blockquote, blockquote::before {
+  color: #1e3a8a !important;
+  border-left-color: #1e3a8a !important;
+}
+
+/* 分隔线 */
+hr {
+  border-top-color: #1e3a8a !important;
+}
+
+/* 导航菜单竖线分隔符 */
+#header #nav li:not(:last-child)::after,
+#header #nav li:not(:last-child) {
+  border-right-color: #1e3a8a !important;
+}
+
+#footer nav li:not(:last-child)::after,
+#footer nav li:not(:last-child) {
+  border-right-color: #1e3a8a !important;
+}
