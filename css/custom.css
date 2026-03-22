@@ -357,16 +357,13 @@ a:hover {
   border-bottom-color: #d14d72 !important;
 }
 
-/* 导航菜单链接 - 无下划线，黑色 */
-#header #nav a,
-#footer nav a {
-  text-decoration: none !important;
-  color: #333 !important;
-}
+/* ========================================
+   导航菜单样式优化
+   ======================================== */
 
-#header #nav a:hover,
-#footer nav a:hover {
-  color: #1e3a8a !important;
+/* 顶部导航菜单链接 - 去掉下划线 */
+#header #nav a {
+  text-decoration: none !important;
 }
 
 /* 侧边栏标题 - 黑色，无下划线 */
