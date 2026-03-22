@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件 在之前我们已经使用 moveit 配置助手生成了自制的机械臂的配置文件，但是由于缺少驱动，因此只能使用他的 demo 界面来控制虚拟的 rviz 中的机械臂，而无法控制实体机械臂。 因此这一部分我们就要把在（3）中建立的机器人驱动嵌入 moveit 生成的配置文件中，从而达成用 moveit 配置助手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件">
+<meta property="og:url" content="https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/index.html">
+<meta property="og:site_name" content="张旭">
+<meta property="og:description" content="【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件 在之前我们已经使用 moveit 配置助手生成了自制的机械臂的配置文件，但是由于缺少驱动，因此只能使用他的 demo 界面来控制虚拟的 rviz 中的机械臂，而无法控制实体机械臂。 因此这一部分我们就要把在（3）中建立的机器人驱动嵌入 moveit 生成的配置文件中，从而达成用 moveit 配置助手">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-actual/01-launch-files.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-actual/02-rviz-test.jpg">
+<meta property="article:published_time" content="2024-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:00:00.000Z">
+<meta property="article:author" content="ZhangXu">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="MoveIt">
+<meta property="article:tag" content="机械臂控制，配置文件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prologue-z.github.io/images/posts/moveit-actual/01-launch-files.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- custom styles -->
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr single-post  ">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/21/ROS-moveit%20%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%201-urdf%20%E6%96%87%E4%BB%B6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&text=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&is_video=false&description=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件&body=Check out this article: https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&name=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&t=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91%E5%88%A9%E7%94%A8-moveit-%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E4%BF%AE%E6%94%B9-moveit-%E9%85%8D%E7%BD%AE%E5%8A%A9%E6%89%8B%E7%94%9F%E6%88%90%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%9A%84%E4%B8%A4%E4%B8%AA%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">需要修改的两个部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8E%A5%E5%8F%97-moveit-%E4%B8%AD%E7%9A%84-action-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 接受 moveit 中的 action 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%BB%E5%8F%96%E7%94%B5%E6%9C%BA%E7%8A%B6%E6%80%81%E5%8F%91%E5%B8%83%E5%88%B0-movegroup"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 读取电机状态发布到 movegroup</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">需要修改的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-demo-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-demo-launch%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">1. demo_actual.launch（修改 demo.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-move-group-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-move-group-launch%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">2. move_group_actual.launch（修改 move_group.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-trajectory-execution-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-trajectory-execution-launch%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">3. trajectory_execution_actual.launch（修改 trajectory_execution.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C"><span class="toc-number">1.6.</span> <span class="toc-text">实际运行效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%BF%A1%E6%81%AF"><span class="toc-number">1.7.</span> <span class="toc-text">环境信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.8.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">ZhangXu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-12T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-01-13</time>
+        
+      
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="【ROS】利用-moveit-控制自制机械臂（4）——修改-moveit-配置助手生成的配置文件"><a href="#【ROS】利用-moveit-控制自制机械臂（4）——修改-moveit-配置助手生成的配置文件" class="headerlink" title="【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"></a>【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件</h1><hr>
+<p>在之前我们已经使用 moveit 配置助手生成了自制的机械臂的配置文件，但是由于缺少驱动，因此只能使用他的 demo 界面来控制虚拟的 rviz 中的机械臂，而无法控制实体机械臂。</p>
+<p>因此这一部分我们就要把在（3）中建立的机器人驱动嵌入 moveit 生成的配置文件中，从而达成用 moveit 配置助手生成的 demo.launch 控制实体机械臂的目的。</p>
+<hr>
+<h2 id="需要修改的两个部分"><a href="#需要修改的两个部分" class="headerlink" title="需要修改的两个部分"></a>需要修改的两个部分</h2><p>首先对于直接生成的 moveit 配置文件，根源上需要更改的主要两个部分：</p>
+<h3 id="1-接受-moveit-中的-action-指令"><a href="#1-接受-moveit-中的-action-指令" class="headerlink" title="1. 接受 moveit 中的 action 指令"></a>1. 接受 moveit 中的 action 指令</h3><p>接受 moveit 中的 launch 文件生成的 <code>follow_joint_trajectory</code> 的 action 指令去驱动机械臂，这里注意驱动中与 moveit 中对于 <code>follow_joint_trajectory</code> 的 action 的名字一定要一致，否则会报错，这一点在之前我们在建立驱动时已经成功了，即读取 goal 信息，用来控制电机转动。</p>
+<p>常见错误信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] [1649324583.023988413]: Unable to identify any set of controllers that can actuate the specified joints: [ elbow_joint shoulder_lift_joint shoulder_pan_joint wrist_1_joint wrist_2_joint wrist_3_joint ]</span><br><span class="line">[ERROR] [1649324583.024022449]: Known controllers and their joints:</span><br><span class="line">[ERROR] [1649324583.024088233]: Apparently trajectory initialization failed</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-读取电机状态发布到-movegroup"><a href="#2-读取电机状态发布到-movegroup" class="headerlink" title="2. 读取电机状态发布到 movegroup"></a>2. 读取电机状态发布到 movegroup</h3><p>另一个就是读取电机的状态发布到 movegroup 中使得 moveit 机器人状态与实际机器人一致。这一点虽然我们已经在机器人驱动中把机器人状态发布出来了，但是这里还是需要修改配置文件中的 launch 文件进行修改让 moveit 知道从哪里接受实际的机器人状态，事实上（4）主要就是做的这一工作。</p>
+<hr>
+<h2 id="需要修改的文件"><a href="#需要修改的文件" class="headerlink" title="需要修改的文件"></a>需要修改的文件</h2><p>首先我们先理清楚需要修改的文件内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">demo.launch </span><br><span class="line">  → movegroup.launch </span><br><span class="line">    → trajectory_execution.launch </span><br><span class="line">      → $(arg moveit_controller_manager)_moveit_controller_manager.launch </span><br><span class="line">        → $(arg moveit_controller_manager)_controllers.yaml</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>moveit_controller_manager</code> 可以等于 <code>fake</code>、<code>simple</code>、<code>ros_control</code>，这里先以 <code>simple</code> 为例实现功能，后续尝试升级为 <code>ros_control</code>。</p>
+<p>上面是运行 <code>demo.launch</code> 需要使用的 launch 文件，当然并非这些文件都需要修改，大部分都已经被 moveit 配置助手给设计的很完善了，并不需要什么修改。</p>
+<p>这里为了避免修改源文件影响后续的其他工作，我将这一次测试成功的几个 launch 都复制一份并增加 <code>_actual</code> 后缀。可以看到共有三个文件需要修改：</p>
+<p><img src="/images/posts/moveit-actual/01-launch-files.jpg" alt="MoveIt 配置文件列表"></p>
+<p><em>MoveIt 配置文件列表（添加_actual 后缀的三个文件）</em></p>
+<hr>
+<h2 id="1-demo-actual-launch（修改-demo-launch）"><a href="#1-demo-actual-launch（修改-demo-launch）" class="headerlink" title="1. demo_actual.launch（修改 demo.launch）"></a>1. demo_actual.launch（修改 demo.launch）</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Choose controller manager: fake, simple, or ros_control --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;moveit_controller_manager&quot;</span> <span class="attr">default</span>=<span class="string">&quot;simple&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>moveit_controller_manager</code> 设定为 <code>simple</code>，然后把 <code>move_group.launch</code> 改为 <code>move_group_actual.launch</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(dirname)/move_group_actual.launch&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;allow_trajectory_execution&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;moveit_controller_manager&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg moveit_controller_manager)&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;fake_execution_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg fake_execution_type)&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;info&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;debug&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg debug)&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;pipeline&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg pipeline)&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;load_robot_description&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg load_robot_description)&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-move-group-actual-launch（修改-move-group-launch）"><a href="#2-move-group-actual-launch（修改-move-group-launch）" class="headerlink" title="2. move_group_actual.launch（修改 move_group.launch）"></a>2. move_group_actual.launch（修改 move_group.launch）</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Trajectory Execution Functionality --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">ns</span>=<span class="string">&quot;move_group&quot;</span> <span class="attr">file</span>=<span class="string">&quot;$(dirname)/trajectory_execution_actual.launch.xml&quot;</span> <span class="attr">if</span>=<span class="string">&quot;$(arg allow_trajectory_execution)&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;moveit_manage_controllers&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;moveit_controller_manager&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg moveit_controller_manager)&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;fake_execution_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg fake_execution_type)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里其实不需要做什么改动，但是由于在后续的 <code>trajectory_execution.launch</code> 中进行了改动，因此需要把 <code>trajectory_execution.launch</code> 改为 <code>trajectory_execution_actual.launch</code>。</p>
+<hr>
+<h2 id="3-trajectory-execution-actual-launch（修改-trajectory-execution-launch）"><a href="#3-trajectory-execution-actual-launch（修改-trajectory-execution-launch）" class="headerlink" title="3. trajectory_execution_actual.launch（修改 trajectory_execution.launch）"></a>3. trajectory_execution_actual.launch（修改 trajectory_execution.launch）</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- When determining the expected duration of a trajectory, this multiplicative factor is applied to get the allowed duration of execution --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;trajectory_execution/allowed_execution_duration_scaling&quot;</span> <span class="attr">value</span>=<span class="string">&quot;6&quot;</span>/&gt;</span> <span class="comment">&lt;!-- default 1.2 --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把这个参数从 <code>1.2</code> 调整为 <code>6</code>，参数是调整容错的，有时候机器人的实际响应时间并没有规划的那么快，这里调大一点增加一点容错，使得机器人的响应时间即使很慢也能慢慢执行完成。</p>
+<hr>
+<h2 id="实际运行效果"><a href="#实际运行效果" class="headerlink" title="实际运行效果"></a>实际运行效果</h2><p>以上就完成了更改，最后展示一下实际运行状态下各个节点之间的通讯关系供参考对照：</p>
+<p><img src="/images/posts/moveit-actual/02-rviz-test.jpg" alt="RViz 实际测试效果"></p>
+<p><em>RViz 实际测试效果（左侧为节点通讯关系图，右侧为机械臂运动规划界面）</em></p>
+<hr>
+<h2 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h2><ul>
+<li><strong>ROS 版本</strong>: noetic</li>
+<li><strong>日期</strong>: 2024.1.13</li>
+</ul>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_56661101/article/details/131415296">ROS Moveit 配置全网最详细教程-CSDN 博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33328642/article/details/117843831">Moveit 实际的机械臂控制（4）修改机械臂配置文件实现真实控制-CSDN 博客</a></li>
+</ul>
+<hr>
+<p><em>本文原载于 CSDN，已迁移至个人博客。</em></p>
+<p><em>最后更新：2026 年 3 月</em></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about.html">About</a></li>
+        
+          <li><a href="/publications.html">publications</a></li>
+        
+          <li><a href="/projects.html">Projects</a></li>
+        
+          <li><a href="/honors.html">honors</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91%E5%88%A9%E7%94%A8-moveit-%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E4%BF%AE%E6%94%B9-moveit-%E9%85%8D%E7%BD%AE%E5%8A%A9%E6%89%8B%E7%94%9F%E6%88%90%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%9A%84%E4%B8%A4%E4%B8%AA%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">需要修改的两个部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8E%A5%E5%8F%97-moveit-%E4%B8%AD%E7%9A%84-action-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 接受 moveit 中的 action 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%BB%E5%8F%96%E7%94%B5%E6%9C%BA%E7%8A%B6%E6%80%81%E5%8F%91%E5%B8%83%E5%88%B0-movegroup"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 读取电机状态发布到 movegroup</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">需要修改的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-demo-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-demo-launch%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">1. demo_actual.launch（修改 demo.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-move-group-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-move-group-launch%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">2. move_group_actual.launch（修改 move_group.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-trajectory-execution-actual-launch%EF%BC%88%E4%BF%AE%E6%94%B9-trajectory-execution-launch%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">3. trajectory_execution_actual.launch（修改 trajectory_execution.launch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C"><span class="toc-number">1.6.</span> <span class="toc-text">实际运行效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%BF%A1%E6%81%AF"><span class="toc-number">1.7.</span> <span class="toc-text">环境信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.8.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&text=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&is_video=false&description=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件&body=Check out this article: https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&title=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&name=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%204/&t=【ROS】利用 moveit 控制自制机械臂（4）——修改 moveit 配置助手生成的配置文件"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    ZhangXu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
