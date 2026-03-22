@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="【ROS】ROS 局域网下多机通讯方法 最近工作中需要用到多机通讯，这里稍微总结一下使用方法。  目录 网络配置 [修改两个设备的 hosts 文件](#二修改两个设备的 hosts 文件) [修改两个 ROS 设备的.bashrc](#三修改两个 ros 设备的 bashrc) [launch 文件中给节点设定运行的设备](#四 launch 文件中给节点设定运行的设备)   一、网络配置首先确">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ROS】ROS 局域网下多机通讯方法">
+<meta property="og:url" content="https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/index.html">
+<meta property="og:site_name" content="张旭">
+<meta property="og:description" content="【ROS】ROS 局域网下多机通讯方法 最近工作中需要用到多机通讯，这里稍微总结一下使用方法。  目录 网络配置 [修改两个设备的 hosts 文件](#二修改两个设备的 hosts 文件) [修改两个 ROS 设备的.bashrc](#三修改两个 ros 设备的 bashrc) [launch 文件中给节点设定运行的设备](#四 launch 文件中给节点设定运行的设备)   一、网络配置首先确">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ros-network/01-network-config.jpg">
+<meta property="article:published_time" content="2024-10-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:00:00.000Z">
+<meta property="article:author" content="ZhangXu">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="多机通讯，局域网配置">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prologue-z.github.io/images/posts/ros-network/01-network-config.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>【ROS】ROS 局域网下多机通讯方法</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- custom styles -->
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr single-post  ">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/07/02/ubuntu%20%E5%9B%BA%E5%AE%9A%20usb%20%E4%B8%B2%E5%8F%A3%E5%8F%B7/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/08/solidworks%20%E5%AF%BC%E5%87%BA%20urdf/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&text=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&is_video=false&description=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】ROS 局域网下多机通讯方法&body=Check out this article: https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&name=【ROS】ROS 局域网下多机通讯方法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&t=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91ROS-%E5%B1%80%E5%9F%9F%E7%BD%91%E4%B8%8B%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">【ROS】ROS 局域网下多机通讯方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">一、网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BF%AE%E6%94%B9%E4%B8%A4%E4%B8%AA%E8%AE%BE%E5%A4%87%E7%9A%84-hosts-%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">二、修改两个设备的 hosts 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E7%AB%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">主机端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E6%9C%BA%E7%AB%AF"><span class="toc-number">1.3.2.</span> <span class="toc-text">从机端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BF%AE%E6%94%B9%E4%B8%A4%E4%B8%AA-ROS-%E8%AE%BE%E5%A4%87%E7%9A%84-bashrc"><span class="toc-number">1.4.</span> <span class="toc-text">三、修改两个 ROS 设备的.bashrc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E7%AB%AF-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">主机端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E6%9C%BA%E7%AB%AF-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">从机端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81launch-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%BB%99%E8%8A%82%E7%82%B9%E8%AE%BE%E5%AE%9A%E8%BF%90%E8%A1%8C%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">1.5.</span> <span class="toc-text">四、launch 文件中给节点设定运行的设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-number">1.6.</span> <span class="toc-text">测试验证</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        【ROS】ROS 局域网下多机通讯方法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">ZhangXu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-18T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-10-19</time>
+        
+      
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="【ROS】ROS-局域网下多机通讯方法"><a href="#【ROS】ROS-局域网下多机通讯方法" class="headerlink" title="【ROS】ROS 局域网下多机通讯方法"></a>【ROS】ROS 局域网下多机通讯方法</h1><hr>
+<p>最近工作中需要用到多机通讯，这里稍微总结一下使用方法。</p>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#%E4%B8%80%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE">网络配置</a></li>
+<li>[修改两个设备的 hosts 文件](#二修改两个设备的 hosts 文件)</li>
+<li>[修改两个 ROS 设备的.bashrc](#三修改两个 ros 设备的 bashrc)</li>
+<li>[launch 文件中给节点设定运行的设备](#四 launch 文件中给节点设定运行的设备)</li>
+</ol>
+<hr>
+<h2 id="一、网络配置"><a href="#一、网络配置" class="headerlink" title="一、网络配置"></a>一、网络配置</h2><p>首先确保两个 ROS 设备连接到同一局域网下，然后查询两个设备的在这个局域网内的 IP 地址，运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+
+<p>这里举个例子，主机的 IP 地址为 <code>192.168.1.127</code>，从机的 IP 地址为 <code>192.168.1.126</code>；之后可测试一下能否互相 ping 通，成功后进行下一步。</p>
+<p>将两个电脑用网线直连可以构建一个简易的局域网（而且速度快），但是需要在两个电脑上设置一下为 ipv4 设置为手动模式，然后设置到统一的子网地址，网关也要一致，例如网关都设置为 <code>192.168.1.200</code>，主机和从机的 ip 地址分别为 <code>192.168.1.127</code>，<code>192.168.1.126</code></p>
+<p><img src="/images/posts/ros-network/01-network-config.jpg" alt="网络配置界面"></p>
+<p><em>IPv4 手动配置界面，显示地址、子网掩码、网关设置</em></p>
+<hr>
+<h2 id="二、修改两个设备的-hosts-文件"><a href="#二、修改两个设备的-hosts-文件" class="headerlink" title="二、修改两个设备的 hosts 文件"></a>二、修改两个设备的 hosts 文件</h2><p>这里需要在主机和从机的 hosts 文件中分别添加对方的 IP 和用户名。</p>
+<h3 id="主机端"><a href="#主机端" class="headerlink" title="主机端"></a>主机端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.126 ros_cv</span><br></pre></td></tr></table></figure>
+
+<h3 id="从机端"><a href="#从机端" class="headerlink" title="从机端"></a>从机端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.127 camar</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、修改两个-ROS-设备的-bashrc"><a href="#三、修改两个-ROS-设备的-bashrc" class="headerlink" title="三、修改两个 ROS 设备的.bashrc"></a>三、修改两个 ROS 设备的.bashrc</h2><p>在 ROS 的使用中 <code>.bashrc</code> 是一个比较常见的配置文件，主要是修改终端的配置。这里我们需要对两设备分别添加 ROS 多机通讯的环境变量。</p>
+<h3 id="主机端-1"><a href="#主机端-1" class="headerlink" title="主机端"></a>主机端</h3><p>在 <code>~/.bashrc</code> 文件末尾添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ROS_MASTER_URI=http://192.168.1.127:11311</span><br><span class="line"><span class="built_in">export</span> ROS_HOSTNAME=192.168.1.127</span><br></pre></td></tr></table></figure>
+
+<h3 id="从机端-1"><a href="#从机端-1" class="headerlink" title="从机端"></a>从机端</h3><p>在 <code>~/.bashrc</code> 文件末尾添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ROS_MASTER_URI=http://192.168.1.127:11311</span><br><span class="line"><span class="built_in">export</span> ROS_HOSTNAME=192.168.1.126</span><br></pre></td></tr></table></figure>
+
+<p>添加完成后，运行以下命令使配置生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、launch-文件中给节点设定运行的设备"><a href="#四、launch-文件中给节点设定运行的设备" class="headerlink" title="四、launch 文件中给节点设定运行的设备"></a>四、launch 文件中给节点设定运行的设备</h2><p>在 launch 文件中，可以通过 <code>machine</code> 标签来指定节点运行的设备：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 在主机上运行的节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;package_name&quot;</span> <span class="attr">type</span>=<span class="string">&quot;node_name&quot;</span> <span class="attr">name</span>=<span class="string">&quot;node_name&quot;</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 在从机上运行的节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">machine</span> <span class="attr">name</span>=<span class="string">&quot;remote_machine&quot;</span> <span class="attr">address</span>=<span class="string">&quot;192.168.1.126&quot;</span> <span class="attr">default</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">machine</span>=<span class="string">&quot;remote_machine&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;package_name&quot;</span> <span class="attr">type</span>=<span class="string">&quot;node_name&quot;</span> <span class="attr">name</span>=<span class="string">&quot;node_name&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h2><p>配置完成后，可以通过以下方式测试多机通讯是否成功：</p>
+<ol>
+<li><strong>在主机上运行 roscore</strong></li>
+<li><strong>在从机上运行</strong> <code>rostopic list</code> <strong>查看是否能列出主机上的 topic</strong></li>
+<li><strong>在从机上运行</strong> <code>rosrun</code> <strong>启动节点，观察是否能在主机上看到</strong></li>
+</ol>
+<hr>
+<p><em>本文原载于 CSDN，已迁移至个人博客。</em></p>
+<p><em>最后更新：2026 年 3 月</em></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about.html">About</a></li>
+        
+          <li><a href="/publications.html">publications</a></li>
+        
+          <li><a href="/projects.html">Projects</a></li>
+        
+          <li><a href="/honors.html">honors</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91ROS-%E5%B1%80%E5%9F%9F%E7%BD%91%E4%B8%8B%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">【ROS】ROS 局域网下多机通讯方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">一、网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BF%AE%E6%94%B9%E4%B8%A4%E4%B8%AA%E8%AE%BE%E5%A4%87%E7%9A%84-hosts-%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">二、修改两个设备的 hosts 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E7%AB%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">主机端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E6%9C%BA%E7%AB%AF"><span class="toc-number">1.3.2.</span> <span class="toc-text">从机端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BF%AE%E6%94%B9%E4%B8%A4%E4%B8%AA-ROS-%E8%AE%BE%E5%A4%87%E7%9A%84-bashrc"><span class="toc-number">1.4.</span> <span class="toc-text">三、修改两个 ROS 设备的.bashrc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E7%AB%AF-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">主机端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E6%9C%BA%E7%AB%AF-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">从机端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81launch-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%BB%99%E8%8A%82%E7%82%B9%E8%AE%BE%E5%AE%9A%E8%BF%90%E8%A1%8C%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">1.5.</span> <span class="toc-text">四、launch 文件中给节点设定运行的设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-number">1.6.</span> <span class="toc-text">测试验证</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&text=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&is_video=false&description=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】ROS 局域网下多机通讯方法&body=Check out this article: https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&title=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&name=【ROS】ROS 局域网下多机通讯方法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/10/19/ros%20%E5%B1%80%E5%9F%9F%E7%BD%91%E5%A4%9A%E6%9C%BA%E9%80%9A%E8%AE%AF/&t=【ROS】ROS 局域网下多机通讯方法"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    ZhangXu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
