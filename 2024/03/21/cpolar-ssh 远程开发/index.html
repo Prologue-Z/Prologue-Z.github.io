@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机 前言在机器人被搬到另一个屋之后，通过局域网进行 SSH 开发就变成了个困难的问题。因此尝试了异地组网来解决这个问题，看了一些资料后发现基于 Cpolar 进行异地组网也不困难，这里记录一下步骤。  开发环境 硬件: 香橙派 5 Plus，NUC13 系统: Ubuntu 20.04   操作流程1. 安装 C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机">
+<meta property="og:url" content="https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="张旭">
+<meta property="og:description" content="使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机 前言在机器人被搬到另一个屋之后，通过局域网进行 SSH 开发就变成了个困难的问题。因此尝试了异地组网来解决这个问题，看了一些资料后发现基于 Cpolar 进行异地组网也不困难，这里记录一下步骤。  开发环境 硬件: 香橙派 5 Plus，NUC13 系统: Ubuntu 20.04   操作流程1. 安装 C">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/cpolar-ssh/01-cpolar-tunnel-settings.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/cpolar-ssh/02-cpolar-tunnel-list.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/cpolar-ssh/03-ssh-config.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/cpolar-ssh/04-vscode-ssh.jpg">
+<meta property="article:published_time" content="2024-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:00:00.000Z">
+<meta property="article:author" content="ZhangXu">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="Cpolar">
+<meta property="article:tag" content="VSCode">
+<meta property="article:tag" content="异地组网，远程开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prologue-z.github.io/images/posts/cpolar-ssh/01-cpolar-tunnel-settings.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- custom styles -->
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr single-post  ">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&text=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&is_video=false&description=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机&body=Check out this article: https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&name=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&t=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Cpolar-%E5%BC%82%E5%9C%B0%E7%BB%84%E7%BD%91%EF%BC%8C%E5%9C%A8-VSCode-%E4%B8%8A-SSH-%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91-Ubuntu-%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">1.2.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">操作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-Cpolar-%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 安装 Cpolar 软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B7%BB%E5%8A%A0%E5%B9%B6%E5%90%AF%E5%8A%A8-Cpolar-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 添加并启动 Cpolar 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9B%E5%85%A5-Cpolar-%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 进入 Cpolar 控制面板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B7%BB%E5%8A%A0-SSH-%E9%9A%A7%E9%81%93"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 添加 SSH 隧道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9F%A5%E7%9C%8B%E5%85%AC%E7%BD%91%E9%9A%A7%E9%81%93"><span class="toc-number">1.3.5.</span> <span class="toc-text">5. 查看公网隧道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">SSH 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE-SSH-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 配置 SSH 客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-VSCode-SSH-%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. VSCode SSH 连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">1.5.</span> <span class="toc-text">使用技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9B%BA%E5%AE%9A%E9%9A%A7%E9%81%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 固定隧道地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 开机自启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E5%85%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.5.3.</span> <span class="toc-text">3. 安全注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.6.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">ZhangXu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-20T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-03-21</time>
+        
+      
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="使用-Cpolar-异地组网，在-VSCode-上-SSH-远程开发-Ubuntu-主机"><a href="#使用-Cpolar-异地组网，在-VSCode-上-SSH-远程开发-Ubuntu-主机" class="headerlink" title="使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"></a>使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机</h1><hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在机器人被搬到另一个屋之后，通过局域网进行 SSH 开发就变成了个困难的问题。因此尝试了异地组网来解决这个问题，看了一些资料后发现基于 Cpolar 进行异地组网也不困难，这里记录一下步骤。</p>
+<hr>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li><strong>硬件</strong>: 香橙派 5 Plus，NUC13</li>
+<li><strong>系统</strong>: Ubuntu 20.04</li>
+</ul>
+<hr>
+<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><h3 id="1-安装-Cpolar-软件"><a href="#1-安装-Cpolar-软件" class="headerlink" title="1. 安装 Cpolar 软件"></a>1. 安装 Cpolar 软件</h3><p>首先安装 Cpolar 软件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 curl（前置软件）</span></span><br><span class="line"><span class="built_in">sudo</span> apt install curl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 cpolar</span></span><br><span class="line">curl -L https://www.cpolar.com/static/downloads/install-release-cpolar.sh | <span class="built_in">sudo</span> bash</span><br></pre></td></tr></table></figure>
+
+<p>查看 Cpolar 版本号可以验证是否安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpolar version</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-添加并启动-Cpolar-服务"><a href="#2-添加并启动-Cpolar-服务" class="headerlink" title="2. 添加并启动 Cpolar 服务"></a>2. 添加并启动 Cpolar 服务</h3><p>在系统中添加 Cpolar 服务并启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> cpolar</span><br><span class="line"><span class="built_in">sudo</span> systemctl start cpolar</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-进入-Cpolar-控制面板"><a href="#3-进入-Cpolar-控制面板" class="headerlink" title="3. 进入 Cpolar 控制面板"></a>3. 进入 Cpolar 控制面板</h3><p>安装完成后打开浏览器进入 Cpolar 控制面板，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost:9200</span><br></pre></td></tr></table></figure>
+
+<p>进入 Cpolar 控制面板登录后，会是如下界面：</p>
+<p><img src="/images/posts/cpolar-ssh/01-cpolar-tunnel-settings.jpg" alt="Cpolar 隧道管理界面"></p>
+<p><em>Cpolar 隧道管理界面，添加新的 SSH 隧道，名称自定义，协议选择 tcp，本地地址填写 22，端口类型选择随机临时 TCP 端口，地区选择 China Top</em></p>
+<h3 id="4-添加-SSH-隧道"><a href="#4-添加-SSH-隧道" class="headerlink" title="4. 添加 SSH 隧道"></a>4. 添加 SSH 隧道</h3><p>添加一个新的隧道，配置如下：</p>
+<ul>
+<li><strong>隧道名称</strong>: ssh（可自定义）</li>
+<li><strong>协议</strong>: tcp</li>
+<li><strong>本地地址</strong>: 22</li>
+<li><strong>端口类型</strong>: 随机临时 TCP 端口</li>
+<li><strong>地区</strong>: China Top</li>
+</ul>
+<p>然后点击”更新”按钮保存配置。</p>
+<h3 id="5-查看公网隧道"><a href="#5-查看公网隧道" class="headerlink" title="5. 查看公网隧道"></a>5. 查看公网隧道</h3><p>打开在线隧道列表，发现这里实现了一个公网隧道：</p>
+<p><img src="/images/posts/cpolar-ssh/02-cpolar-tunnel-list.jpg" alt="Cpolar 在线隧道列表"></p>
+<p><em>Cpolar 在线隧道列表，显示隧道名称、公网地址、协议、本地地址和创建时间</em></p>
+<p>记录下公网地址，后续 SSH 连接会用到。</p>
+<hr>
+<h2 id="SSH-配置"><a href="#SSH-配置" class="headerlink" title="SSH 配置"></a>SSH 配置</h2><h3 id="1-配置-SSH-客户端"><a href="#1-配置-SSH-客户端" class="headerlink" title="1. 配置 SSH 客户端"></a>1. 配置 SSH 客户端</h3><p>在本地计算机上编辑 SSH 配置文件（<code>~/.ssh/config</code>），添加以下内容：</p>
+<p><img src="/images/posts/cpolar-ssh/03-ssh-config.jpg" alt="SSH 配置文件"></p>
+<p><em>SSH 配置文件，包含 Host、HostName、Port、User 配置</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host 12.tcp.cpolar.top</span><br><span class="line">    HostName 12.tcp.cpolar.top</span><br><span class="line">    Port &lt;你的端口号&gt;</span><br><span class="line">    User &lt;你的用户名&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-VSCode-SSH-连接"><a href="#2-VSCode-SSH-连接" class="headerlink" title="2. VSCode SSH 连接"></a>2. VSCode SSH 连接</h3><p>打开 VSCode，安装 Remote - SSH 扩展，然后添加 SSH 连接：</p>
+<p><img src="/images/posts/cpolar-ssh/04-vscode-ssh.jpg" alt="VSCode SSH 连接界面"></p>
+<p><em>VSCode SSH 连接界面，显示已连接的 SSH 主机和远程文件夹</em></p>
+<p>连接成功后，就可以在 VSCode 上进行远程开发了。</p>
+<hr>
+<h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><h3 id="1-固定隧道地址"><a href="#1-固定隧道地址" class="headerlink" title="1. 固定隧道地址"></a>1. 固定隧道地址</h3><p>如果需要长期使用，建议在 Cpolar 官网注册账号并购买基础套餐，这样可以获得固定的公网地址，避免每次重启都要重新配置。</p>
+<h3 id="2-开机自启动"><a href="#2-开机自启动" class="headerlink" title="2. 开机自启动"></a>2. 开机自启动</h3><p>Cpolar 服务已经通过 systemd 配置为开机自启动，无需额外配置。</p>
+<h3 id="3-安全注意事项"><a href="#3-安全注意事项" class="headerlink" title="3. 安全注意事项"></a>3. 安全注意事项</h3><ul>
+<li>使用 SSH 密钥认证代替密码认证</li>
+<li>定期更换 SSH 密钥</li>
+<li>限制 SSH 登录用户</li>
+<li>使用防火墙限制访问</li>
+</ul>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cpolar.com/">Cpolar 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/remote/ssh">VSCode Remote SSH 文档</a></li>
+</ul>
+<hr>
+<p><em>本文原载于 CSDN，已迁移至个人博客。</em></p>
+<p><em>最后更新：2026 年 3 月</em></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about.html">About</a></li>
+        
+          <li><a href="/publications.html">publications</a></li>
+        
+          <li><a href="/projects.html">Projects</a></li>
+        
+          <li><a href="/honors.html">honors</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Cpolar-%E5%BC%82%E5%9C%B0%E7%BB%84%E7%BD%91%EF%BC%8C%E5%9C%A8-VSCode-%E4%B8%8A-SSH-%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91-Ubuntu-%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">1.2.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">操作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-Cpolar-%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 安装 Cpolar 软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B7%BB%E5%8A%A0%E5%B9%B6%E5%90%AF%E5%8A%A8-Cpolar-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 添加并启动 Cpolar 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9B%E5%85%A5-Cpolar-%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 进入 Cpolar 控制面板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B7%BB%E5%8A%A0-SSH-%E9%9A%A7%E9%81%93"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 添加 SSH 隧道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9F%A5%E7%9C%8B%E5%85%AC%E7%BD%91%E9%9A%A7%E9%81%93"><span class="toc-number">1.3.5.</span> <span class="toc-text">5. 查看公网隧道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">SSH 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE-SSH-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 配置 SSH 客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-VSCode-SSH-%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. VSCode SSH 连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">1.5.</span> <span class="toc-text">使用技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9B%BA%E5%AE%9A%E9%9A%A7%E9%81%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 固定隧道地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 开机自启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E5%85%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.5.3.</span> <span class="toc-text">3. 安全注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.6.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&text=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&is_video=false&description=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机&body=Check out this article: https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&title=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&name=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/03/21/cpolar-ssh%20%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/&t=使用 Cpolar 异地组网，在 VSCode 上 SSH 远程开发 Ubuntu 主机"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    ZhangXu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
