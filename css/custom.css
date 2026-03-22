@@ -361,9 +361,13 @@ a:hover {
    导航菜单样式优化
    ======================================== */
 
-/* 顶部导航菜单链接 - 去掉下划线 */
+/* 顶部导航菜单链接 - 去掉默认下划线，悬停时显示 */
 #header #nav a {
   text-decoration: none !important;
+}
+
+#header #nav a:hover {
+  text-decoration: underline !important;
 }
 
 /* 侧边栏标题 - 黑色，无下划线 */
