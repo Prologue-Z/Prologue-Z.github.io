@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="制作 Ubuntu 镜像及烧录教程 前言最近更换了 NUC 主机作为机器人的控制主机，为了避免之前在安装操作系统过程中把系统搞崩了的惨状，决定养成定期备份系统的好习惯，这就需要掌握制作系统镜像及烧录的能力。 工作环境 电脑: NUC13 竞技场峡谷 i7-1360P 薄款 系统版本: Ubuntu 20.04   1. 安装 Systemback 软件这里使用的是韩国人的 Systemback 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="制作 Ubuntu 镜像及烧录教程">
+<meta property="og:url" content="https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/index.html">
+<meta property="og:site_name" content="张旭">
+<meta property="og:description" content="制作 Ubuntu 镜像及烧录教程 前言最近更换了 NUC 主机作为机器人的控制主机，为了避免之前在安装操作系统过程中把系统搞崩了的惨状，决定养成定期备份系统的好习惯，这就需要掌握制作系统镜像及烧录的能力。 工作环境 电脑: NUC13 竞技场峡谷 i7-1360P 薄款 系统版本: Ubuntu 20.04   1. 安装 Systemback 软件这里使用的是韩国人的 Systemback 1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/01-systemback-main.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/02-creating-live.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/03-live-settings.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/04-install-cdrtools.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/06-ventoy-boot.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/05-secure-boot-error.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/07-systemback-live-boot.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/08-format-error.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/09-gparted-partition.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/10-system-install-user.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/11-system-install-partition.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/12-system-install-partition-done.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/13-installing-system.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/14-bios-secure-boot.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/15-bios-power-on.jpg">
+<meta property="article:published_time" content="2024-04-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:00:00.000Z">
+<meta property="article:author" content="ZhangXu">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="Systemback">
+<meta property="article:tag" content="系统备份，镜像制作，烧录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prologue-z.github.io/images/posts/ubuntu-mirror/01-systemback-main.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>制作 Ubuntu 镜像及烧录教程</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- custom styles -->
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr single-post  ">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/08/solidworks%20%E5%AF%BC%E5%87%BA%20urdf/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&text=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&is_video=false&description=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=制作 Ubuntu 镜像及烧录教程&body=Check out this article: https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&name=制作 Ubuntu 镜像及烧录教程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&t=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C-Ubuntu-%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">制作 Ubuntu 镜像及烧录教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.1.</span> <span class="toc-text">工作环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-Systemback-%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">1. 安装 Systemback 软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%B7%BB%E5%8A%A0-APT-%E4%BB%93%E5%BA%93%E5%B9%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 添加 APT 仓库并安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%8D%B8%E8%BD%BD%E5%85%B6%E4%BB%96%E7%89%88%E6%9C%AC%EF%BC%88%E5%A6%82%E6%9C%89%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 卸载其他版本（如有）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A4%87%E4%BB%BD-sblive-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">2. 备份 sblive 系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85-cdrtools"><span class="toc-number">1.4.</span> <span class="toc-text">3. 安装 cdrtools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BD%AC%E6%8D%A2%E4%B8%BA-iso-%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.5.</span> <span class="toc-text">4. 转换为 iso 格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%A7%A3%E5%8E%8B-sblive-%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 解压 .sblive 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 重命名文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%94%9F%E6%88%90-iso-%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.3.</span> <span class="toc-text">4.3 生成 iso 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%83%A7%E5%BD%95%E5%90%AF%E5%8A%A8%E7%A1%AC%E7%9B%98"><span class="toc-number">1.6.</span> <span class="toc-text">5. 烧录启动硬盘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">6. 安装系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%90%AF%E7%94%A8%E5%AE%89%E5%85%A8%E5%BC%95%E5%AF%BC%E6%94%AF%E6%8C%81"><span class="toc-number">1.7.1.</span> <span class="toc-text">6.1 启用安全引导支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E9%80%89%E6%8B%A9%E5%90%AF%E5%8A%A8%E7%9B%98"><span class="toc-number">1.7.2.</span> <span class="toc-text">6.2 选择启动盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%99%A8"><span class="toc-number">1.7.3.</span> <span class="toc-text">6.3 进入系统安装器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E8%A7%A3%E5%86%B3%E6%97%A0%E6%B3%95%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%A1%AC%E7%9B%98%E7%9A%84-Bug"><span class="toc-number">1.7.4.</span> <span class="toc-text">6.4 解决无法格式化硬盘的 Bug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85"><span class="toc-number">1.7.5.</span> <span class="toc-text">6.5 系统安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-6-%E5%AE%89%E8%A3%85%E5%90%8E%E9%85%8D%E7%BD%AE"><span class="toc-number">1.7.6.</span> <span class="toc-text">6.6 安装后配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.8.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        制作 Ubuntu 镜像及烧录教程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">ZhangXu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-02T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-04-03</time>
+        
+      
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="制作-Ubuntu-镜像及烧录教程"><a href="#制作-Ubuntu-镜像及烧录教程" class="headerlink" title="制作 Ubuntu 镜像及烧录教程"></a>制作 Ubuntu 镜像及烧录教程</h1><hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近更换了 NUC 主机作为机器人的控制主机，为了避免之前在安装操作系统过程中把系统搞崩了的惨状，决定养成定期备份系统的好习惯，这就需要掌握制作系统镜像及烧录的能力。</p>
+<h3 id="工作环境"><a href="#工作环境" class="headerlink" title="工作环境"></a>工作环境</h3><ul>
+<li><strong>电脑</strong>: NUC13 竞技场峡谷 i7-1360P 薄款</li>
+<li><strong>系统版本</strong>: Ubuntu 20.04</li>
+</ul>
+<hr>
+<h2 id="1-安装-Systemback-软件"><a href="#1-安装-Systemback-软件" class="headerlink" title="1. 安装 Systemback 软件"></a>1. 安装 Systemback 软件</h2><p>这里使用的是韩国人的 Systemback 1.9.4 版本，亲测可用。</p>
+<h3 id="1-1-添加-APT-仓库并安装"><a href="#1-1-添加-APT-仓库并安装" class="headerlink" title="1.1 添加 APT 仓库并安装"></a>1.1 添加 APT 仓库并安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Add APT</span></span><br><span class="line">curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | <span class="built_in">sudo</span> -E bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install package</span></span><br><span class="line"><span class="built_in">sudo</span> apt install systemback</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-卸载其他版本（如有）"><a href="#1-2-卸载其他版本（如有）" class="headerlink" title="1.2 卸载其他版本（如有）"></a>1.2 卸载其他版本（如有）</h3><p>如果安装了别的版本的 systemback，可以先卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt purge systemback</span><br></pre></td></tr></table></figure>
+
+<p>然后修改一下 apt 仓库源，把之前的 systemback 源给删掉：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+
+<p>然后 update 一下重新安装即可。这样我们就完成了 Systemback 的安装。用管理员身份启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemback</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/posts/ubuntu-mirror/01-systemback-main.jpg" alt="Systemback 主界面"></p>
+<p><em>Systemback 主界面，包含还原点、高亮还原点、存储文件夹设置，以及系统还原、系统复制、系统安装、创建 Live 系统、系统修复、排除等功能按钮</em></p>
+<p>如上图所示，这个软件除了制作镜像还可以设定还原点进行系统的还原操作，十分实用。</p>
+<hr>
+<h2 id="2-备份-sblive-系统"><a href="#2-备份-sblive-系统" class="headerlink" title="2. 备份 sblive 系统"></a>2. 备份 sblive 系统</h2><p>下面开始基于这个软件进行系统镜像的制作，点击创建 Live 系统：</p>
+<p><img src="/images/posts/ubuntu-mirror/02-creating-live.jpg" alt="创建 Live 系统进度"></p>
+<p><em>正在创建 Live 系统，进程 1&#x2F;3+1</em></p>
+<p>然后选上包含用户数据，点击创建新的。在系统名称处也可以自定义导出的 sblive 文件的名称，如果 auto 就会是如右上角一样（右上角是我已经进行了一次备份）以前缀 + 时间进行命名。</p>
+<p><img src="/images/posts/ubuntu-mirror/03-live-settings.jpg" alt="Live 系统设置"></p>
+<p><em>创建支持 Live 模式的镜像设置界面，包含工作目录、Live 模式系统名称、选项（包含用户数据文件）、写入目标设备、Live 模式选项（创建新的、向目标设备写入、转存为光盘镜像、删除）</em></p>
+<p>如图所示，开始了 Live 系统的备份，最终会导出一个 sblive 格式的文件。其实这一文件在 Systemback 上就可以制作系统启动 U 盘了，但是为了方便系统完全崩到开不了机的情况，还是转换为更通用的 iso 文件。</p>
+<hr>
+<h2 id="3-安装-cdrtools"><a href="#3-安装-cdrtools" class="headerlink" title="3. 安装 cdrtools"></a>3. 安装 cdrtools</h2><p>为了将在转换之前需要进行 cdrtools 软件的安装，这里完全复制自参考资料。</p>
+<p>这里直接贴出指令，挨个运行即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install aria2</span><br><span class="line"></span><br><span class="line">aria2c -s 10 https://nchc.dl.sourceforge.net/project/cdrtools/alpha/cdrtools-3.02a07.tar.gz</span><br><span class="line"></span><br><span class="line">tar -xvf cdrtools-3.02a07.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> cdrtools-3.02</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/posts/ubuntu-mirror/04-install-cdrtools.jpg" alt="安装 cdrtools 过程"></p>
+<p><em>终端显示 cdrtools 编译安装过程，包含多个 make 命令的输出</em></p>
+<p>中间会有一些 warning 啥的，但是最后运行时候似乎也不影响。</p>
+<hr>
+<h2 id="4-转换为-iso-格式"><a href="#4-转换为-iso-格式" class="headerlink" title="4. 转换为 iso 格式"></a>4. 转换为 iso 格式</h2><p>下面开始真正进行格式的转换。</p>
+<h3 id="4-1-解压-sblive-文件"><a href="#4-1-解压-sblive-文件" class="headerlink" title="4.1 解压 .sblive 文件"></a>4.1 解压 .sblive 文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> sblive</span><br><span class="line"></span><br><span class="line">tar -xf /home/systemback_live_2018-10-15.sblive -C sblive</span><br></pre></td></tr></table></figure>
+
+<p>其中那个 <code>systemback_live_2018-10-15.sblive</code> 换成你自己的 sblive 文件名即可。</p>
+<h3 id="4-2-重命名文件"><a href="#4-2-重命名文件" class="headerlink" title="4.2 重命名文件"></a>4.2 重命名文件</h3><p>然后重命名解压出来的部分文件，虽然也不知道为啥，但是照做就是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> sblive/syslinux/syslinux.cfg sblive/syslinux/isolinux.cfg</span><br><span class="line"></span><br><span class="line"><span class="built_in">mv</span> sblive/syslinux sblive/isolinux</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-生成-iso-文件"><a href="#4-3-生成-iso-文件" class="headerlink" title="4.3 生成 iso 文件"></a>4.3 生成 iso 文件</h3><p>最后直接生成即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/schily/bin/mkisofs -iso-level 3 -r -V sblive -cache-inodes -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o sblive.iso sblive</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>sblive.iso</code> 是生成的 iso 文件名，可以自定义。</p>
+<p>至此我们就完成了 iso 的转换，然后过程中一些无用的文件就可以删除了。比如解压出的 sblive 文件夹。sblive 文件也可以删除，留着作为备份也行。另外把下载的 cdrtools 的压缩包给删了可以。</p>
+<hr>
+<h2 id="5-烧录启动硬盘"><a href="#5-烧录启动硬盘" class="headerlink" title="5. 烧录启动硬盘"></a>5. 烧录启动硬盘</h2><p>首先制作 Ventoy 启动 U 盘，这里不再赘述，没有什么值得注意的点。</p>
+<p>然后把自己上面做好的镜像拷进去就完成了启动硬盘的制作。</p>
+<p><img src="/images/posts/ubuntu-mirror/06-ventoy-boot.jpg" alt="Ventoy 启动界面"></p>
+<p><em>Ventoy 启动界面，显示 sblive.iso 和 ubuntu-20.04.6-desktop-amd64.iso 两个镜像文件</em></p>
+<hr>
+<h2 id="6-安装系统"><a href="#6-安装系统" class="headerlink" title="6. 安装系统"></a>6. 安装系统</h2><h3 id="6-1-启用安全引导支持"><a href="#6-1-启用安全引导支持" class="headerlink" title="6.1 启用安全引导支持"></a>6.1 启用安全引导支持</h3><p>对于系统盘是完全干净的新盘情况下，大概率摁 F10 U 盘启动是不起作用的，需要先摁 F12 进入 BIOS 界面。</p>
+<p><img src="/images/posts/ubuntu-mirror/05-secure-boot-error.jpg" alt="安全启动错误"></p>
+<p><em>蓝色屏幕显示 ERROR: Verification failed: (0x1A) Security Violation</em></p>
+<p>然后参照参考资料完成为 Ventoy 启用安全引导支持之后，进行下一步骤。</p>
+<h3 id="6-2-选择启动盘"><a href="#6-2-选择启动盘" class="headerlink" title="6.2 选择启动盘"></a>6.2 选择启动盘</h3><p>把启动硬盘插到 NUC 主机上，启动时候摁 F10，选择 U 盘作为启动盘。</p>
+<p><img src="/images/posts/ubuntu-mirror/07-systemback-live-boot.jpg" alt="Systemback Live 启动选项"></p>
+<p><em>Systemback Live 启动菜单，包含启动 Live 系统、启动系统安装器、在安全图像模式下启动 Live 系统、在调试模式下启动 Live 系统</em></p>
+<p>然后会进入这个界面，选择自己的目标 iso 进入。然后 Ventoy 会提供多个启动项选择，这里<strong>一定要注意选择 grub 启动模式</strong>！很多教程都让选择 normal 启动模式，但是根据我测试，使用 Systemback 制作的镜像在 NUC 主机上启动会黑屏卡住不动。</p>
+<h3 id="6-3-进入系统安装器"><a href="#6-3-进入系统安装器" class="headerlink" title="6.3 进入系统安装器"></a>6.3 进入系统安装器</h3><p>然后会进入 Systemback 的引导界面，这里选择系统安装器。</p>
+<p>然后会直接进入系统，和你拷贝的系统其实一模一样，输入密码进入后会直接打开 Systemback 的安装系统界面。</p>
+<h3 id="6-4-解决无法格式化硬盘的-Bug"><a href="#6-4-解决无法格式化硬盘的-Bug" class="headerlink" title="6.4 解决无法格式化硬盘的 Bug"></a>6.4 解决无法格式化硬盘的 Bug</h3><p>这里会遇到一个大坑，正常情况（也许很多电脑和版本都是正常情况）直接安装就行，但是我这个经过测试会遇到一个蛋疼的 Bug——无法格式化硬盘。</p>
+<p><img src="/images/posts/ubuntu-mirror/08-format-error.jpg" alt="系统复制错误"></p>
+<p><em>Systemback 错误提示：系统复制已中止！指定的分区无法格式化（因正在使用或不可用）。&#x2F;dev&#x2F;sda1</em></p>
+<p>最终我们也参照参考资料解决了这个问题，也就是手动格式化硬盘。</p>
+<p>打开 GParted 软件（没有自己安装，这个很简单），然后把硬盘分区并进行格式化：</p>
+<ul>
+<li><strong>fat32</strong>，512MiB</li>
+<li><strong>linux-swap</strong>，32000MiB（和内存大小一致）</li>
+<li><strong>ext4</strong>，其他所有空间</li>
+</ul>
+<p><img src="/images/posts/ubuntu-mirror/09-gparted-partition.jpg" alt="GParted 分区界面"></p>
+<p><em>GParted 分区界面，显示&#x2F;dev&#x2F;nvme0n1 的分区情况：&#x2F;dev&#x2F;nvme0n1p1 (fat32, 512.00 MiB, boot), &#x2F;dev&#x2F;nvme0n1p2 (linux-swap, 31.25 GiB), &#x2F;dev&#x2F;nvme0n1p3 (ext4, 445.19 GiB)</em></p>
+<p>点对号保存我们就完成了硬盘的格式化。然后我们终于可以愉快的安装系统了。<strong>这里需要重新启动一下主机，重新选择系统安装器</strong>，否则可能会出一些问题。</p>
+<h3 id="6-5-系统安装"><a href="#6-5-系统安装" class="headerlink" title="6.5 系统安装"></a>6.5 系统安装</h3><p>打开 Systemback 软件，点击安装系统，首先是设定用户名密码啥的，这个按照自己需求设定即可。</p>
+<p><img src="/images/posts/ubuntu-mirror/10-system-install-user.jpg" alt="系统安装 - 用户设置"></p>
+<p><em>系统安装界面，包含新用户全名、新用户登录名、新用户密码、新管理员密码（可选）、新主机名设置</em></p>
+<p>然后就进入了分区环节，这里我们已经在上面用 GParted 分区并格式化了，所以这里其实只需要设定一下挂载点即可，而且<strong>必须注意一定不要选择格式化</strong>，也就是所有分区下格式一栏不打勾！</p>
+<p><img src="/images/posts/ubuntu-mirror/11-system-install-partition.jpg" alt="系统安装 - 分区设置 1"></p>
+<p><em>系统安装分区设置界面，显示分区列表和挂载点设置，红圈标注”格式”复选框不勾选</em></p>
+<p>挂载点的具体设定为（<strong>一定不要点格式</strong>）：</p>
+<ul>
+<li><strong>EFI 系统分区</strong>（主分区）512MiB → <code>/boot/efi</code></li>
+<li><strong>交换空间</strong>（逻辑分区）32000MiB → <code>SWAP</code></li>
+<li>**挂载点&#x2F;**（主分区）剩余所有容量 → <code>/</code></li>
+</ul>
+<p><img src="/images/posts/ubuntu-mirror/12-system-install-partition-done.jpg" alt="系统安装 - 分区设置 2"></p>
+<p><em>系统安装分区设置完成界面，所有分区挂载点已设置，格式复选框均未勾选，选项中选择”传递用户配置文件及用户数据”</em></p>
+<p>另外记得选择<strong>传递用户配置文件及用户数据</strong>。点击下一步就可以开始系统的安装，等待进度条结束重启就 ok 啦。</p>
+<p><img src="/images/posts/ubuntu-mirror/13-installing-system.jpg" alt="正在安装系统"></p>
+<p><em>Systemback 正在安装系统界面，进度条显示 3%</em></p>
+<h3 id="6-6-安装后配置"><a href="#6-6-安装后配置" class="headerlink" title="6.6 安装后配置"></a>6.6 安装后配置</h3><p>安装完系统开机后可能会找不到 wifi，这是由于没有关闭安全模式，启动的时候摁 F2 进入 BIOS 关闭 Secure Boot 即可。</p>
+<p><img src="/images/posts/ubuntu-mirror/14-bios-secure-boot.jpg" alt="BIOS 安全启动设置"></p>
+<p><em>BIOS Security 界面，Secure Boot 设置为 Disabled（红圈标注）</em></p>
+<p>然后可以顺便把通电自启也打开。</p>
+<p><img src="/images/posts/ubuntu-mirror/15-bios-power-on.jpg" alt="BIOS 电源设置"></p>
+<p><em>BIOS Secondary Power Settings 界面，After Power Failure 设置为 Power On（红圈标注）</em></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Pan-xi-yi/p/11830789.html">Systemback 制作大于 4G 的 Ubuntu 系统镜像 - 冰柠檬的夏天 - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/375912899">使用 Systemback 克隆 Ubuntu 系统 - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WZ4y167me?p=7">第六课：UBUNTU 的安装 - 哔哩哔哩</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39852953/article/details/112769508">使用 systemback 写入 U 盘-CSDN 博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/bd/art/576420693">Ubuntu18.04 制作系统 ISO 镜像并物理机还原（Systemback） - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mculoop.com/thread-201-1-1.html">ventoy 启动盘提示 (0x1A) Security Violation 的解决方法 - 微控圈</a></li>
+</ul>
+<hr>
+<p><em>本文原载于 CSDN，已迁移至个人博客。</em></p>
+<p><em>最后更新：2026 年 3 月</em></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about.html">About</a></li>
+        
+          <li><a href="/publications.html">publications</a></li>
+        
+          <li><a href="/projects.html">Projects</a></li>
+        
+          <li><a href="/honors.html">honors</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C-Ubuntu-%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">制作 Ubuntu 镜像及烧录教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.1.</span> <span class="toc-text">工作环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-Systemback-%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">1. 安装 Systemback 软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%B7%BB%E5%8A%A0-APT-%E4%BB%93%E5%BA%93%E5%B9%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 添加 APT 仓库并安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%8D%B8%E8%BD%BD%E5%85%B6%E4%BB%96%E7%89%88%E6%9C%AC%EF%BC%88%E5%A6%82%E6%9C%89%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 卸载其他版本（如有）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A4%87%E4%BB%BD-sblive-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">2. 备份 sblive 系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85-cdrtools"><span class="toc-number">1.4.</span> <span class="toc-text">3. 安装 cdrtools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BD%AC%E6%8D%A2%E4%B8%BA-iso-%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.5.</span> <span class="toc-text">4. 转换为 iso 格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%A7%A3%E5%8E%8B-sblive-%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 解压 .sblive 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 重命名文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%94%9F%E6%88%90-iso-%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.3.</span> <span class="toc-text">4.3 生成 iso 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%83%A7%E5%BD%95%E5%90%AF%E5%8A%A8%E7%A1%AC%E7%9B%98"><span class="toc-number">1.6.</span> <span class="toc-text">5. 烧录启动硬盘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">6. 安装系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%90%AF%E7%94%A8%E5%AE%89%E5%85%A8%E5%BC%95%E5%AF%BC%E6%94%AF%E6%8C%81"><span class="toc-number">1.7.1.</span> <span class="toc-text">6.1 启用安全引导支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E9%80%89%E6%8B%A9%E5%90%AF%E5%8A%A8%E7%9B%98"><span class="toc-number">1.7.2.</span> <span class="toc-text">6.2 选择启动盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%99%A8"><span class="toc-number">1.7.3.</span> <span class="toc-text">6.3 进入系统安装器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E8%A7%A3%E5%86%B3%E6%97%A0%E6%B3%95%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%A1%AC%E7%9B%98%E7%9A%84-Bug"><span class="toc-number">1.7.4.</span> <span class="toc-text">6.4 解决无法格式化硬盘的 Bug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85"><span class="toc-number">1.7.5.</span> <span class="toc-text">6.5 系统安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-6-%E5%AE%89%E8%A3%85%E5%90%8E%E9%85%8D%E7%BD%AE"><span class="toc-number">1.7.6.</span> <span class="toc-text">6.6 安装后配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.8.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&text=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&is_video=false&description=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=制作 Ubuntu 镜像及烧录教程&body=Check out this article: https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&title=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&name=制作 Ubuntu 镜像及烧录教程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/04/03/ubuntu%20%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E5%8F%8A%E7%83%A7%E5%BD%95/&t=制作 Ubuntu 镜像及烧录教程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    ZhangXu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
