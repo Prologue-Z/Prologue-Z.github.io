@@ -362,11 +362,14 @@ a:hover {
    ======================================== */
 
 /* 顶部导航菜单链接 - 去掉默认下划线，悬停时显示 */
-#header #nav a {
+#header #nav a,
+#nav a {
   text-decoration: none !important;
+  border-bottom: none !important;
 }
 
-#header #nav a:hover {
+#header #nav a:hover,
+#nav a:hover {
   text-decoration: underline !important;
 }
 
