@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件 通过 rviz 测试 xacro 文件无误之后，准备开始进行 moveit 的设置，首先安装 moveit（这里我的版本是 ubuntu20.04，所以 ros 版本是 noetic）： 1sudo apt-get install ros-noetic-moveit  打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件">
+<meta property="og:url" content="https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/index.html">
+<meta property="og:site_name" content="张旭">
+<meta property="og:description" content="【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件 通过 rviz 测试 xacro 文件无误之后，准备开始进行 moveit 的设置，首先安装 moveit（这里我的版本是 ubuntu20.04，所以 ros 版本是 noetic）： 1sudo apt-get install ros-noetic-moveit  打">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/01-start.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/02-self-collisions.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/03-virtual-joints.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/04-planning-groups.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/05-joint-collection.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/06-gripper-group.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/07-gripper-joints.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/08-base-pose.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/09-test-pose.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/10-open-pose.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/11-close-pose.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/12-end-effectors.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/13-passive-joints-1.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/14-passive-joints-2.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/15-controllers-1.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/16-controllers-2.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/17-configuration-files.jpg">
+<meta property="og:image" content="https://prologue-z.github.io/images/posts/moveit-setup/18-rviz-test.jpg">
+<meta property="article:published_time" content="2024-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:00:00.000Z">
+<meta property="article:author" content="ZhangXu">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="MoveIt">
+<meta property="article:tag" content="机械臂控制，运动规划">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prologue-z.github.io/images/posts/moveit-setup/01-start.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- custom styles -->
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr single-post  ">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/08/solidworks%20%E5%AF%BC%E5%87%BA%20urdf/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/21/ROS-moveit%20%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%201-urdf%20%E6%96%87%E4%BB%B6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&text=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&is_video=false&description=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件&body=Check out this article: https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&name=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&t=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91%E5%88%A9%E7%94%A8-moveit-%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E9%80%9A%E8%BF%87-MoveIt-Setup-Assistant-%E7%94%9F%E6%88%90%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%90%AF%E5%8A%A8%E7%95%8C%E9%9D%A2"><span class="toc-number">1.1.</span> <span class="toc-text">1. 启动界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B%E7%9F%A9%E9%98%B5"><span class="toc-number">1.2.</span> <span class="toc-text">2. 碰撞检测矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E5%85%B3%E8%8A%82"><span class="toc-number">1.3.</span> <span class="toc-text">3. 虚拟关节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Planning-Groups"><span class="toc-number">1.4.</span> <span class="toc-text">4. Planning Groups</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%9C%BA%E6%A2%B0%E8%87%82%E5%85%B3%E8%8A%82%E9%9B%86%E5%90%88"><span class="toc-number">1.5.</span> <span class="toc-text">5. 机械臂关节集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%A4%B9%E7%88%AA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.</span> <span class="toc-text">6. 夹爪配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9C%BA%E5%99%A8%E4%BA%BA-Pose"><span class="toc-number">1.7.</span> <span class="toc-text">7. 机器人 Pose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%9C%AB%E7%AB%AF%E6%89%A7%E8%A1%8C%E5%99%A8"><span class="toc-number">1.8.</span> <span class="toc-text">8. 末端执行器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%A2%AB%E5%8A%A8%E5%85%B3%E8%8A%82"><span class="toc-number">1.9.</span> <span class="toc-text">9. 被动关节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%8E%A7%E5%88%B6%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">1.10.</span> <span class="toc-text">10. 控制器配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%94%9F%E6%88%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.11.</span> <span class="toc-text">11. 生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-number">1.12.</span> <span class="toc-text">12. 测试验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.13.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">ZhangXu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-12T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-01-13</time>
+        
+      
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="【ROS】利用-moveit-控制自制机械臂（2）——通过-MoveIt-Setup-Assistant-生成机械臂的配置文件"><a href="#【ROS】利用-moveit-控制自制机械臂（2）——通过-MoveIt-Setup-Assistant-生成机械臂的配置文件" class="headerlink" title="【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"></a>【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件</h1><hr>
+<p>通过 rviz 测试 xacro 文件无误之后，准备开始进行 moveit 的设置，首先安装 moveit（这里我的版本是 ubuntu20.04，所以 ros 版本是 noetic）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-moveit</span><br></pre></td></tr></table></figure>
+
+<p>打开 MoveIt Setup Assistant（运行前先运行 roscore）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun moveit_setup_assistant moveit_setup_assistant</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-启动界面"><a href="#1-启动界面" class="headerlink" title="1. 启动界面"></a>1. 启动界面</h2><p>导入之前设定好的 xacro：</p>
+<p><img src="/images/posts/moveit-setup/01-start.jpg" alt="MoveIt Setup Assistant 启动界面"></p>
+<p><em>MoveIt Setup Assistant 启动界面</em></p>
+<hr>
+<h2 id="2-碰撞检测矩阵"><a href="#2-碰撞检测矩阵" class="headerlink" title="2. 碰撞检测矩阵"></a>2. 碰撞检测矩阵</h2><p>设定碰撞检测矩阵，直接点生成就好，默认的参数基本可以满足大多数场景：</p>
+<p><img src="/images/posts/moveit-setup/02-self-collisions.jpg" alt="碰撞检测矩阵"></p>
+<p><em>碰撞检测矩阵配置</em></p>
+<hr>
+<h2 id="3-虚拟关节"><a href="#3-虚拟关节" class="headerlink" title="3. 虚拟关节"></a>3. 虚拟关节</h2><p>添加一个虚拟关节，用来把机械臂底端固定在世界坐标系：</p>
+<p><img src="/images/posts/moveit-setup/03-virtual-joints.jpg" alt="虚拟关节配置"></p>
+<p><em>虚拟关节配置</em></p>
+<hr>
+<h2 id="4-Planning-Groups"><a href="#4-Planning-Groups" class="headerlink" title="4. Planning Groups"></a>4. Planning Groups</h2><p>添加 planning groups：</p>
+<p><img src="/images/posts/moveit-setup/04-planning-groups.jpg" alt="Planning Groups"></p>
+<p><em>Planning Groups 配置</em></p>
+<hr>
+<h2 id="5-机械臂关节集合"><a href="#5-机械臂关节集合" class="headerlink" title="5. 机械臂关节集合"></a>5. 机械臂关节集合</h2><p>添加 arm group，起个名字然后，选 kdl 运动学 solver，ompl planning 选 rrt，其他的默认：</p>
+<p><img src="/images/posts/moveit-setup/05-joint-collection.jpg" alt="机械臂关节集合"></p>
+<p><em>机械臂关节集合配置</em></p>
+<p>这里选择 kin.chain 也是一样的，选上所有在 arm 的 joint 即可，这里选添加 joint，把所有臂上的 joint 都加上去即可，先不用管 mimic 之类的设定。</p>
+<hr>
+<h2 id="6-夹爪配置"><a href="#6-夹爪配置" class="headerlink" title="6. 夹爪配置"></a>6. 夹爪配置</h2><p>夹爪参照机械臂部分进行同样的设定：</p>
+<p><img src="/images/posts/moveit-setup/06-gripper-group.jpg" alt="夹爪 Planning Group"></p>
+<p><em>夹爪 Planning Group 配置</em></p>
+<p><img src="/images/posts/moveit-setup/07-gripper-joints.jpg" alt="夹爪关节集合"></p>
+<p><em>夹爪关节集合配置</em></p>
+<hr>
+<h2 id="7-机器人-Pose"><a href="#7-机器人-Pose" class="headerlink" title="7. 机器人 Pose"></a>7. 机器人 Pose</h2><p>添加几个定义的机器人 pose 方便后续的调试与使用。</p>
+<p>臂的 base_pose（竖直状态）：</p>
+<p><img src="/images/posts/moveit-setup/08-base-pose.jpg" alt="Base Pose"></p>
+<p><em>臂的 base_pose（竖直状态）</em></p>
+<p>臂的 test_pose（随机给的后续用来测试）：</p>
+<p><img src="/images/posts/moveit-setup/09-test-pose.jpg" alt="Test Pose"></p>
+<p><em>臂的 test_pose（随机给的后续用来测试）</em></p>
+<p>夹爪的 open_pose：</p>
+<p><img src="/images/posts/moveit-setup/10-open-pose.jpg" alt="Open Pose"></p>
+<p><em>夹爪的 open_pose</em></p>
+<p>夹爪的 close_pose：</p>
+<p><img src="/images/posts/moveit-setup/11-close-pose.jpg" alt="Close Pose"></p>
+<p><em>夹爪的 close_pose</em></p>
+<hr>
+<h2 id="8-末端执行器"><a href="#8-末端执行器" class="headerlink" title="8. 末端执行器"></a>8. 末端执行器</h2><p>添加末端执行器：</p>
+<p><img src="/images/posts/moveit-setup/12-end-effectors.jpg" alt="末端执行器配置"></p>
+<p><em>末端执行器配置</em></p>
+<p>注意这里，parent link 选择臂的末端 link，parent group 就是空白。</p>
+<hr>
+<h2 id="9-被动关节"><a href="#9-被动关节" class="headerlink" title="9. 被动关节"></a>9. 被动关节</h2><p>添加被动关节，本例有大量被动关节，例如 mimic 中的，（经过测试，添加与否都不影响后续的使用，避免多余的麻烦，这里之后都不添加被动关节）：</p>
+<p><img src="/images/posts/moveit-setup/13-passive-joints-1.jpg" alt="被动关节配置 1"></p>
+<p><em>被动关节配置 1</em></p>
+<p><img src="/images/posts/moveit-setup/14-passive-joints-2.jpg" alt="被动关节配置 2"></p>
+<p><em>被动关节配置 2</em></p>
+<hr>
+<h2 id="10-控制器配置"><a href="#10-控制器配置" class="headerlink" title="10. 控制器配置"></a>10. 控制器配置</h2><p>生成 ros controller：</p>
+<p><img src="/images/posts/moveit-setup/15-controllers-1.jpg" alt="控制器配置 1"></p>
+<p><em>控制器配置 1</em></p>
+<p><img src="/images/posts/moveit-setup/16-controllers-2.jpg" alt="控制器配置 2"></p>
+<p><em>控制器配置 2</em></p>
+<hr>
+<h2 id="11-生成配置文件"><a href="#11-生成配置文件" class="headerlink" title="11. 生成配置文件"></a>11. 生成配置文件</h2><p>simulation 不用管。</p>
+<p>3d perception 暂时也不选，之后可考虑加上深度相机后选上。</p>
+<p>点击生成配置功能包，包的名字填成臂的名称_moveit_config 即可：</p>
+<p><img src="/images/posts/moveit-setup/17-configuration-files.jpg" alt="配置文件生成"></p>
+<p><em>配置文件生成</em></p>
+<hr>
+<h2 id="12-测试验证"><a href="#12-测试验证" class="headerlink" title="12. 测试验证"></a>12. 测试验证</h2><p>运行生成的 demo 测试生成的 moveit 配置文件有没有问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch carm_6dof_moveit_config demo.launch</span><br></pre></td></tr></table></figure>
+
+<p>选择 goal state 为 test_pose，点击 plan&amp;execute 可以看到规划并运动成功。当然这里还没有连结真实机械臂，所以只是通过一个虚拟的 joint publisher 来模仿机械臂已经运动了。后面我们会通过修改 moveit 的文件来使之能驱动真实机械臂。</p>
+<p><img src="/images/posts/moveit-setup/18-rviz-test.jpg" alt="RViz 测试"></p>
+<p><em>RViz 测试界面</em></p>
+<p>是一些 gripper 的运动，也没问题。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/616711291?utm_id=0">【学习笔记】ROS2 纯小白 - MoveIt! (humble) 引入新的机器人模型 - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/improve100/article/details/50619925">ROS 运动规划 (Motion Planning): MoveIt! 与 OMPL_ros 运动控制世界排名-CSDN 博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51002159/article/details/131600920">ROS-Moveit! 配置 (一)_moveit! 里必须配置夹爪吗-CSDN 博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/575907270">moveit_setup_assistant - 知乎</a></li>
+</ul>
+<hr>
+<p><em>本文原载于 CSDN，已迁移至个人博客。</em></p>
+<p><em>最后更新：2026 年 3 月</em></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about.html">About</a></li>
+        
+          <li><a href="/publications.html">publications</a></li>
+        
+          <li><a href="/projects.html">Projects</a></li>
+        
+          <li><a href="/honors.html">honors</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90ROS%E3%80%91%E5%88%A9%E7%94%A8-moveit-%E6%8E%A7%E5%88%B6%E8%87%AA%E5%88%B6%E6%9C%BA%E6%A2%B0%E8%87%82%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E9%80%9A%E8%BF%87-MoveIt-Setup-Assistant-%E7%94%9F%E6%88%90%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%90%AF%E5%8A%A8%E7%95%8C%E9%9D%A2"><span class="toc-number">1.1.</span> <span class="toc-text">1. 启动界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B%E7%9F%A9%E9%98%B5"><span class="toc-number">1.2.</span> <span class="toc-text">2. 碰撞检测矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E5%85%B3%E8%8A%82"><span class="toc-number">1.3.</span> <span class="toc-text">3. 虚拟关节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Planning-Groups"><span class="toc-number">1.4.</span> <span class="toc-text">4. Planning Groups</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%9C%BA%E6%A2%B0%E8%87%82%E5%85%B3%E8%8A%82%E9%9B%86%E5%90%88"><span class="toc-number">1.5.</span> <span class="toc-text">5. 机械臂关节集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%A4%B9%E7%88%AA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.</span> <span class="toc-text">6. 夹爪配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9C%BA%E5%99%A8%E4%BA%BA-Pose"><span class="toc-number">1.7.</span> <span class="toc-text">7. 机器人 Pose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%9C%AB%E7%AB%AF%E6%89%A7%E8%A1%8C%E5%99%A8"><span class="toc-number">1.8.</span> <span class="toc-text">8. 末端执行器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%A2%AB%E5%8A%A8%E5%85%B3%E8%8A%82"><span class="toc-number">1.9.</span> <span class="toc-text">9. 被动关节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%8E%A7%E5%88%B6%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">1.10.</span> <span class="toc-text">10. 控制器配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%94%9F%E6%88%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.11.</span> <span class="toc-text">11. 生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-number">1.12.</span> <span class="toc-text">12. 测试验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.13.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&text=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&is_video=false&description=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件&body=Check out this article: https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&title=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&name=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://prologue-z.github.io/2024/01/13/ros-moveit%20%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6%202/&t=【ROS】利用 moveit 控制自制机械臂（2）——通过 MoveIt Setup Assistant 生成机械臂的配置文件"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    ZhangXu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/publications.html">Publications</a></li>
+
+      <li><a href="/projects.html">Projects</a></li>
+
+      <li><a href="/patents.html">Patents</a></li>
+
+      <li><a href="/honors.html">Honors</a></li>
+
+      <li><a href="/blog.html">Blog</a></li>
+
+      <li><a href="/other.html">Other</a></li>
+
+
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
