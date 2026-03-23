@@ -559,3 +559,38 @@ hr {
 #footer nav li:not(:last-child) {
   border-right-color: #1e3a8a !important;
 }
+
+/* ========================================
+   Blog Page Styles
+   ======================================== */
+
+.blog-post {
+  margin-bottom: 1.2rem;
+  padding: 0.8rem 1rem;
+  background: #f9f9f9;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.blog-post:hover {
+  background: #f0f0f0;
+  transform: translateX(5px);
+}
+
+.blog-post a {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.3s;
+}
+
+.blog-post a:hover {
+  color: #2bbc8a;
+}
+
+@media (max-width: 768px) {
+  .blog-post {
+    padding: 0.6rem 0.8rem;
+  }
+}
