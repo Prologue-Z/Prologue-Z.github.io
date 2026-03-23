@@ -593,6 +593,31 @@ hr {
   color: #2bbc8a;
 }
 
+/* ========================================
+   Fix icon label hover - no flashing
+   ======================================== */
+
+#actions .icon-label {
+  display: none;
+  position: absolute;
+  right: 2.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+#actions li {
+  position: relative;
+}
+
+#actions li:hover .icon-label {
+  display: inline-block;
+}
+
 .blog-post .post-date {
   color: #999;
   font-size: 0.85rem;
