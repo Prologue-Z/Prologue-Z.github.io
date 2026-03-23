@@ -4,95 +4,66 @@ layout: page
 comments: false
 ---
 
-# 🏆 Honors & Awards
+# 🏆 荣誉与奖项 (Honors & Awards)
+
+> 记录在校期间获得的各类竞赛奖项和荣誉称号。
 
 ---
 
-## 🎓 Scholarships
+## 🏅 竞赛奖项 (Competition Awards)
 
-### **National Scholarship for Graduate Students** | *2025*
-- Ministry of Education, China
-- Top 2% of graduate students nationwide
-- Award Amount: 30,000 CNY
+### **全国大学生节能减排社会实践与科技竞赛** | *2018*
+- **奖项**: 特等奖（国家级）
+- **排名**: 6/77736（前 0.08%）
+- **角色**: 核心队员
+- **作品**: "千里电车"——应用于车顶快换电池的电动汽车高效续航技术
 
-### **Tianjin University Outstanding Student Scholarship** | *2024*
-- Tianjin University
-- 10 recipients selected from 500+ students
-- Award Amount: 10,000 CNY
+### **全国大学生节能减排社会实践与科技竞赛成果转化专项赛** | *2018*
+- **奖项**: 铜奖（国家级）
 
-### **Tianjin University First-Class Scholarship** | *2023*
-- Tianjin University
-- Top 5% academic performance
-- Award Amount: 5,000 CNY
+### **"智新杯"全国人工智能机器人创新大赛** | *2025*
+- **奖项**: 全国二等奖（国家级）
+- **角色**: 队长
+- **作品**: 刚柔混合仿人五指灵巧手
 
----
+### **全国三维数字化创新设计大赛** | *2019*
+- **奖项**: 一等奖（国家级）
+- **角色**: 队长
+- **作品**: 滚动轴承故障智能识别与自动化分类系统
 
-## 🏅 Competition Awards
+### **天津市大学生三维数字化设计大赛** | *2019*
+- **奖项**: 特等奖（市级）
 
-### **China Robot Competition - Continuum Robot Challenge** | *2025*
-- **Award**: First Prize (Gold Medal)
-- **Project**: Continuum Robot Basketball Shooting
-- **Role**: Team Leader
-- **Location**: Beijing, China
-- **Description**: Led team of 4 to develop RL-based control system for continuum robot, achieved highest accuracy in competition.
+### **中关村仿生机器人大赛** | *2024*
+- **奖项**: 创新能力优秀团队（国家级三等奖）
+- **作品**: 仿人机械手 TJU-DM
 
-### **IEEE ICRA Robot Challenge** | *2024*
-- **Award**: Second Prize (Silver Medal)
-- **Project**: Sim-to-Real RL Transfer
-- **Role**: Algorithm Developer
-- **Location**: London, UK
-- **Description**: Developed domain randomization framework for RL policy transfer.
+### **华北五省（市、自治区）大学生机器人大赛** | *2026*
+- **奖项**: 三等奖（国家级）
+- **赛项**: 人工智能与机器人创意设计赛
 
----
+### **全国大学生机器人大赛 RoboMaster 机甲大师赛** | *2018*
+- **奖项**: 二等奖（国家级）
+- **赛区**: 北部分赛区
 
-## 📜 Best Paper Awards
+### **全国大学生节能减排社会实践与科技竞赛（校级选拔赛）** | *2018*
+- **奖项**: 一等奖（校级）
 
-### **IEEE RA-L Best Paper Award** | *2025*
-- **Journal**: IEEE Robotics and Automation Letters
-- **Paper**: "Sim-to-Real Transfer of Reinforcement Learning Policies for Continuum Robot Manipulation"
-- **Co-authors**: ZhangXu, Zhao J, Sun Q, et al.
-
-### **ICRA Best Paper Finalist** | *2026*
-- **Conference**: IEEE International Conference on Robotics and Automation
-- **Paper**: "Learning-Based Adaptive Control for Continuum Robots Under Uncertainty"
-- **Co-authors**: ZhangXu, Li M, Wang F
+### **天津大学"挑战杯"大学生课外学术科技作品竞赛** | *2019*
+- **奖项**: 一等奖（校级）
+- **作品**: "千里电车"——应用于车顶快换电池的电动汽车高效续航技术
 
 ---
 
-## 🎖️ Other Honors
+## 🎖️ 荣誉称号 (Honorary Titles)
 
-### **Outstanding Graduate Student** | *2025*
-- Tianjin University
-- Recognized for academic excellence and research contributions
-- 50 recipients selected from 2000+ students
+### **天津大学三好学生** | *2018, 2019, 2024*
+- 校级荣誉
+- 共获得 3 次
 
-### **Excellent Student Leader** | *2024*
-- School of Mechanical Engineering, Tianjin University
-- Leadership in robotics research team
-
-### **Best Poster Presentation** | *2024*
-- IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)
-- **Topic**: "A Novel Tendon-Driven Continuum Robot with Variable Stiffness"
-- **Location**: Kyoto, Japan
+### **天津大学自强不息先进个人** | *2018*
+- 校级荣誉
 
 ---
 
-## 📋 Academic Service
-
-### **Journal Reviewer**
-- IEEE Transactions on Robotics (T-RO) - 2025-Present
-- Soft Robotics - 2025-Present
-- IEEE Robotics and Automation Letters (RA-L) - 2024-Present
-
-### **Conference Reviewer**
-- ICRA 2026, 2025
-- IROS 2025, 2024
-- IEEE CASE 2025
-
-### **Conference Volunteer**
-- IEEE ICRA 2024, London, UK
-- Role: Session Chair for "Continuum Robots" session
-
----
-
-*Last updated: March 2026*
+*最后更新：2026 年 3 月*

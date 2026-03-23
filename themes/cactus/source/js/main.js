@@ -15,8 +15,9 @@ $(document).ready(function() {
   /**
    * Shows the responsive navigation menu on mobile.
    */
-  $("#header > #nav > ul > .icon").click(function() {
-    $("#header > #nav > ul").toggleClass("responsive");
+  $("#header #nav ul .icon").click(function() {
+    $("#header #nav ul").toggleClass("responsive");
+    return false;
   });
 
 
@@ -56,21 +57,21 @@ $(document).ready(function() {
      */
     if (menu.length) {
       $(window).on("scroll", function() {
-        var topDistance = menu.offset().top;
+        var scrollTop = $(window).scrollTop();
 
         // hide only the navigation links on desktop
-        if (!nav.is(":visible") && topDistance < 50) {
+        if (!nav.is(":visible") && scrollTop < 50) {
           nav.show();
-        } else if (nav.is(":visible") && topDistance > 100) {
+        } else if (nav.is(":visible") && scrollTop > 100) {
           nav.hide();
         }
 
         // on tablet, hide the navigation icon as well and show a "scroll to top
         // icon" instead
-        if ( ! $( "#menu-icon" ).is(":visible") && topDistance < 50 ) {
+        if ( ! $( "#menu-icon" ).is(":visible") && scrollTop < 50 ) {
           $("#menu-icon-tablet").show();
           $("#top-icon-tablet").hide();
-        } else if (! $( "#menu-icon" ).is(":visible") && topDistance > 100) {
+        } else if (! $( "#menu-icon" ).is(":visible") && scrollTop > 100) {
           $("#menu-icon-tablet").hide();
           $("#top-icon-tablet").show();
         }

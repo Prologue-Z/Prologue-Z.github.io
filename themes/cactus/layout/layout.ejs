@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <%- partial('_partial/head') %>
-<body class="max-width mx-auto px3 <%- theme.direction -%>">
-    <% if (is_post()) { %>
+<body class="max-width mx-auto px3 <%- theme.direction -%> <%= is_post() ? 'single-post' : '' %> <%= is_page() && page.path.indexOf('projects/') === 0 ? 'project-detail-page' : '' %> <%= is_page() && page.path.indexOf('projects/') !== 0 ? 'single-page' : '' %>">
+    <% if (is_post() || (is_page() && page.path.indexOf('projects/') === 0)) { %>
       <%- partial('_partial/post/actions_desktop') %>
     <% } %>
     <div class="content index py4 <%= is_home() ? 'h-card' : '' %>">
-        <% if (!is_post()) { %>
+        <% if (!is_post() && !(is_page() && page.path.indexOf('projects/') === 0)) { %>
           <%- partial('_partial/header') %>
         <% } %>
         <%- body %>
-        <% if (is_post()) { %>
+        <% if (is_post() || (is_page() && page.path.indexOf('projects/') === 0)) { %>
           <%- partial('_partial/post/actions_mobile') %>
         <% } %>
         <%- partial('_partial/footer') %>

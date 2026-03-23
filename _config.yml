@@ -3,34 +3,70 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: ZhangXu
-subtitle: PhD Candidate in Robotics @ Tianjin University
+title: 张旭
+subtitle: 机器人学博士候选人 @ 天津大学
 description: |
-  # 👋 张旭 (ZhangXu)
+  # 👋 张旭
   
-  ## PhD Candidate in Robotics
+  ## 机器人学博士候选人
   
-  **Tianjin University, Tianjin, China**
+  **天津大学，中国天津**
   
   ---
   
-  ## 📧 Contact
+  ## 📧 联系方式
   
-  - **Email**: [tju_zhangxu@tju.edu.cn](mailto:tju_zhangxu@tju.edu.cn)
+  - **邮箱**: [tju_zhangxu@tju.edu.cn](mailto:tju_zhangxu@tju.edu.cn)
   - **GitHub**: [@Prologue-Z](https://github.com/Prologue-Z)
-  - **Google Scholar**: [My Profile](https://scholar.google.com/citations?user=oEPuCTIAAAAJ)
+  - **Google Scholar**: [我的主页](https://scholar.google.com/citations?user=oEPuCTIAAAAJ)
   - **ORCID**: [0000-0002-0845-693X](https://orcid.org/0000-0002-0845-693X)
   
   ---
   
-  ## 🔬 Research Focus
+  ## 🎓 教育背景
   
-  My research lies at the intersection of **robotics** and **machine learning**, with a focus on:
+  ### 机器人学 博士候选人  
+  **天津大学**，中国天津  
+  *2022 - 预计 2026*
   
-  1. **Continuum Robotics** - Modeling, control, and motion planning for soft/continuum robots
-  2. **Reinforcement Learning** - Deep RL for robotic manipulation and locomotion
-  3. **Motion Planning** - Trajectory optimization in constrained environments
-  4. **Sim-to-Real Transfer** - Bridging the gap between simulation and real-world deployment
+  - **研究方向**: 连续体机器人、强化学习、运动规划
+  - **导师**: [待补充]
+  
+  ### 工学学士 机械工程  
+  **天津大学**，中国天津  
+  *2018 - 2022*
+  
+  - **GPA**: [待补充]
+  - **荣誉**: [待补充]
+  
+  ---
+  
+  ## 🔬 研究兴趣
+  
+  - **连续体机器人**: 建模、控制和运动规划
+  - **强化学习**: 深度强化学习在机器人操作和 locomotion 中的应用
+  - **运动规划**: 约束环境下的轨迹优化、避障
+  - **机器人学习**: Sim-to-real 迁移、模仿学习
+  
+  ---
+  
+  ## 💻 技术技能
+  
+  ### 编程语言
+  - **Python**: PyTorch, TensorFlow, NumPy, OpenCV
+  - **C++**: ROS, PCL, Open3D
+  - **MATLAB**: 控制系统、仿真
+  
+  ### 仿真与工具
+  - **MuJoCo**: 机器人物理仿真
+  - **Gazebo**: 机器人仿真
+  - **PyBullet**: 物理引擎
+  - **ROS/ROS2**: 机器人操作系统
+  
+  ### 框架与库
+  - **深度学习**: PyTorch, TensorFlow, Stable Baselines3
+  - **控制**: CasADi, ACADO, CVXPY
+  - **可视化**: Matplotlib, Plotly
 keywords: robotics, continuum robot, reinforcement learning, motion planning, PhD, Tianjin University
 author: ZhangXu
 language: en
@@ -111,6 +147,50 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: cactus
+
+# Sidebar Configuration
+sidebar:
+  avatar: /images/avatar.jpg
+  info:
+    - icon: location-dot
+      text: 中国 天津
+    - icon: university
+      text: 天津大学
+    - icon: user-graduate
+      text: 机器人学 博士生
+  contact:
+    - icon: envelope
+      link: mailto:tju_zhangxu@tju.edu.cn
+      title: Email
+    - icon: github
+      link: https://github.com/Prologue-Z
+      title: GitHub
+    - icon: google
+      link: https://scholar.google.com/citations?user=oEPuCTIAAAAJ
+      title: Google Scholar
+    - icon: orcid
+      link: https://orcid.org/0000-0002-0845-693X
+      title: ORCID
+  bio: ''
+  education: |
+    ### 工学博士（在读）
+    **天津大学** | 2023.09 - 至今  
+    机械工程
+    
+    ### 工学硕士
+    **天津大学** | 2020.09 - 2023.06  
+    机械工程
+    
+    ### 工学学士
+    **天津大学** | 2016.09 - 2020.06  
+    机械设计制造及其自动化
+  research_interests: |
+    - **连续体机器人**: 建模、控制和运动规划
+    - **强化学习**: Deep RL for robotic manipulation
+    - **运动规划**: 约束环境下的轨迹优化
+    - **机器人学习**: Sim-to-real 迁移
+  skills: ''
+  news: ''
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

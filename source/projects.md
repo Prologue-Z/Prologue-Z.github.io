@@ -4,155 +4,64 @@ layout: page
 comments: false
 ---
 
-# 🛠️ Projects
+# 🛠️ 项目 (Projects)
 
-> 💡 **Note**: Click on **[Demo]** for video, **[Code]** for GitHub repo.
-
----
-
-## 🔬 Research Projects
-
-### **Continuum Robot Basketball Shooting** | *2026 - Present*
-
-**Reinforcement Learning for Continuum Robot Motion Planning**
-
-![Basketball RL](/images/projects/basketball-rl/thumbnail.jpg)
-
-- **Role**: Lead Researcher
-- **Tech Stack**: MuJoCo, PyTorch, Python, ROS
-- **Description**: 
-  - Developed RL-based control framework for continuum robot basketball shooting
-  - Designed novel reward function for accurate shooting trajectory
-  - Achieved 92% success rate in simulation from 3m distance
-- **Output**: 1 conference paper (IROS 2026), 1 journal paper (under review)
-- **[Code](https://github.com/Prologue-Z/continuum-basketball-rl)** | **[Demo]** | **[Paper]**
+> 以下项目与我的发表论文直接相关，展示了研究工作的详细内容。点击项目名称查看详细信息。
 
 ---
 
-### **PhD Thesis Writing Assistant** | *2026 - Present*
+## 项目列表 (Projects List)
 
-**AI-Powered Academic Writing Tool**
+<div class="project-list">
 
-- **Role**: Developer
-- **Tech Stack**: Python, LLM, MCP
-- **Description**:
-  - Built multi-agent system for thesis writing assistance
-  - Implemented literature review, writing, and formatting agents
-  - Supports real-time collaboration and version control
-- **Output**: Open-source project
-- **[Code]** | **[Demo]**
+### [1. 连续体机器人自适应动力学建模与控制](/projects/almd-control.html)
 
----
+**发表期刊**: Mechanism and Machine Theory, 2024 | **中科院 1 区 | IF: 4.5**
 
-### **Continuum Robot Modeling & Control** | *2024 - 2026*
+- **项目周期**: 2022 - 2024
+- **项目角色**: 第一作者/主要研究者
+- **主要成果**: 建模误差降低 60.2%，跟踪误差降低 67.5%
 
-**Kinematic and Dynamic Modeling for Soft Robots**
-
-- **Role**: PhD Researcher
-- **Tech Stack**: MATLAB, Python, MuJoCo
-- **Description**:
-  - Developed kinematic model for multi-segment continuum robots using Cosserat rod theory
-  - Implemented model predictive control for trajectory tracking
-  - Achieved <2mm positioning error in simulation
-- **Output**: 2 journal papers (Soft Robotics 2026, IEEE T-RO 2026), 1 patent
-- **[Paper]** | **[Video]**
+**[查看详情 →](/projects/almd-control.html)**
 
 ---
 
-### **Sim-to-Real RL Transfer** | *2024 - 2025*
+### [2. 基于速度敏感性的连续体机器人变增益控制](/projects/variable-gain.html)
 
-**Domain Randomization for Continuum Robot Manipulation**
+**发表期刊**: Mechanism and Machine Theory, 2022 | **中科院 1 区 | IF: 4.5**
 
-- **Role**: Researcher
-- **Tech Stack**: PyTorch, Isaac Gym, Domain Randomization
-- **Description**:
-  - Developed sim-to-real transfer framework for RL policies
-  - Implemented domain randomization techniques
-  - Achieved 85% success rate on real robot
-- **Output**: 1 journal paper (IEEE RA-L 2025)
-- **[Paper]** | **[Code]** | **[Video]**
+- **项目周期**: 2020 - 2022
+- **项目角色**: 第一作者/主要研究者
+- **主要成果**: 提出速度敏感性参数，实现变增益控制
+
+**[查看详情 →](/projects/variable-gain.html)**
 
 ---
 
-### **Cable-Driven Continuum Robot for Surgery** | *2024 - 2025*
+### [3. 集成双旋转自由度的连续体机器人设计与控制](/projects/dual-rotational-dofs.html)
 
-**Design and Fabrication of Surgical Robot**
+**发表会议**: IEEE IROS, 2025 | **CCF-A 类会议**
 
-- **Role**: Mechanical Designer
-- **Tech Stack**: SolidWorks, 3D Printing, Cable Actuation
-- **Description**:
-  - Designed 900mm cable-driven continuum robot with 6 DoF
-  - Developed tendon-driven mechanism for minimally invasive surgery
-  - Validated on phantom tissue models
-- **Output**: 1 journal paper (Bioinspiration & Biomimetics 2025), 1 patent
-- **[Paper]** | **[Video]**
+- **项目周期**: 2024 - 2025
+- **项目角色**: 共同作者
+- **主要成果**: 设计集成双旋转自由度，提升运动灵活性
+
+**[查看详情 →](/projects/dual-rotational-dofs.html)**
 
 ---
 
-### **Collision-Free Path Planning** | *2023 - 2024*
+### [4. 连续体机器人环链式运动学模型及在刚柔混合臂中的应用](/projects/cyclotomic-model.html)
 
-**Deep Learning for Dynamic Environment Navigation**
+**发表会议**: IEEE ROBIO, 2025 | **CCF-C 类会议**
 
-- **Role**: Algorithm Developer
-- **Tech Stack**: Python, Deep Learning, CUDA
-- **Description**:
-  - Developed real-time collision avoidance algorithm
-  - Implemented deep learning-based path planning
-  - Achieved 120Hz planning frequency
-- **Output**: 1 journal paper (IEEE T-MRB 2024)
-- **[Paper]** | **[Code]**
+- **项目周期**: 2024 - 2025
+- **项目角色**: 第一作者/主要研究者
+- **主要成果**: 提出环链式运动学模型，应用于刚柔混合臂
+
+**[查看详情 →](/projects/cyclotomic-model.html)**
 
 ---
 
-### **FBG-Based Shape Estimation** | *2023 - 2024*
+</div>
 
-**Shape Sensing for Continuum Robots**
-
-- **Role**: Perception Engineer
-- **Tech Stack**: Python, PyTorch, FBG Sensors
-- **Description**:
-  - Developed deep learning-based shape reconstruction algorithm
-  - Implemented Fiber Bragg Grating sensor data processing
-  - Achieved <1.5mm reconstruction accuracy
-- **Output**: 1 conference paper (ROBIO 2024)
-- **[Paper]** | **[Code]**
-
----
-
-## 💻 Open Source Projects
-
-### **Xiaohongshu MCP** | *2026*
-
-Multi-Client Protocol server for Xiaohongshu automation with Docker support.
-
-- **Tech Stack**: Python, Docker, MCP
-- **Stars**: [XXX] ⭐ | **Forks**: [XX]
-- **[GitHub](https://github.com/Prologue-Z/xiaohongshu-mcp)** | **[Docs]**
-
----
-
-### **Employment Analysis Tool** | *2026*
-
-Automated job market analysis tool for robotics PhDs with web scraping and data visualization.
-
-- **Tech Stack**: Python, Selenium, Plotly
-- **[GitHub](https://github.com/Prologue-Z/employment-analysis)**
-
----
-
-### **Continuum Basketball RL** | *2026*
-
-Reinforcement learning environment for continuum robot basketball shooting in MuJoCo.
-
-- **Tech Stack**: Python, MuJoCo, Gym
-- **[GitHub](https://github.com/Prologue-Z/continuum-basketball-rl)**
-
----
-
-## 🎬 Video Gallery
-
-> 📹 *Demo videos coming soon*
-
----
-
-*Last updated: March 2026*
+*最后更新：2026 年 3 月*

@@ -2,29 +2,90 @@
 
 # Navigation
 nav:
-  home: /
-  about: /about/
-  publications: /publications/
-  projects: /projects/
-  honors: /honors/
-  blog: /archives/
+  home: 首页
+  publications: 论文
+  projects: 项目
+  honors: 荣誉
+  blog: 博客
+  articles: 文章
 
-# Social links
-social_links:
-  github: https://github.com/Prologue-Z
-  googlescholar: https://scholar.google.com/citations?user=oEPuCTIAAAAJ
-  orcid: https://orcid.org/0000-0002-0845-693X
-  email: mailto:tju_zhangxu@tju.edu.cn
+# Social links (disabled - using sidebar instead)
+social_links: []
 
 # Color scheme: dark, light, classic, white
-colorscheme: light
+colorscheme: custom
+
+# Custom colors
+colors:
+  primary: '#1e3a8a'  # 深蓝色
+  secondary: '#3b82f6'  # 亮蓝色
+  background: '#ffffff'
+  text: '#333333'
+
+# Page width (in rem, default: 39)
+# Increase to make content wider (e.g., 50 = ~800px, 60 = ~960px)
+page_width: 55
 
 # Logo
 logo:
   enabled: true
   width: 50
   height: 50
-  url: /images/logo.png
+  url: /images/avatar.jpg
+  gravatar: false
+
+# Disable gravatar for logo
+gravatar:
+  enabled: false
+
+# Sidebar Configuration (for homepage)
+sidebar:
+  # Avatar/Profile photo (place your photo in source/images/)
+  avatar: /images/avatar.jpg
+  
+  # Contact information
+  contact:
+    - icon: envelope
+      text: tju_zhangxu@tju.edu.cn
+      link: mailto:tju_zhangxu@tju.edu.cn
+    - icon: location-dot
+      text: 天津大学，中国天津
+    - icon: graduation-cap
+      text: 机器人学博士候选人
+  
+  # Short bio (markdown supported)
+  bio: |
+    专注于连续体机器人、强化学习和运动规划研究。
+  
+  # Research interests (markdown supported)
+  research_interests: |
+    - **连续体机器人**: 建模、控制和运动规划
+    - **强化学习**: Deep RL for robotic manipulation
+    - **运动规划**: 约束环境下的轨迹优化
+    - **机器人学习**: Sim-to-real 迁移
+  
+  # Education (markdown supported)
+  education: |
+    ### 博士候选人
+    **天津大学** | 2022-2026  
+    机器人学
+    
+    ### 工学学士
+    **天津大学** | 2018-2022  
+    机械工程
+  
+  # Skills (markdown supported)
+  skills: |
+    **编程语言**: Python, C++, MATLAB  
+    **深度学习**: PyTorch, TensorFlow  
+    **仿真工具**: MuJoCo, Gazebo, ROS  
+    **控制**: CasADi, ACADO, CVXPY
+  
+  # News/Updates (markdown supported)
+  news: |-
+    - **2026.03**: 个人主页上线
+    - **2026.01**: 论文被 ICRA 2026 接收
+    - **2025.12**: 获得研究生国家奖学金
 
 # Posts overview
 posts_overview:

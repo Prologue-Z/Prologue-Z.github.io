@@ -1,0 +1,19 @@
+<%
+// 统一的导航菜单配置
+var navMenu = [
+  { text: 'Home', url: '/' },
+  { text: 'Publications', url: '/publications.html' },
+  { text: 'Projects', url: '/projects.html' },
+  { text: 'Patents', url: '/patents.html' },
+  { text: 'Honors', url: '/honors.html' },
+  { text: 'Blog', url: '/blog.html' },
+  { text: 'Other', url: '/other.html' }
+];
+
+// 生成导航菜单 HTML
+navMenu.forEach(function(item) {
+%>
+      <li><a href="<%= item.url %>"><%= item.text %></a></li>
+<%
+});
+%>
