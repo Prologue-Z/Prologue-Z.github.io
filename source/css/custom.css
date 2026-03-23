@@ -597,25 +597,34 @@ hr {
    Fix icon label hover - no flashing
    ======================================== */
 
-#actions .icon-label {
-  display: none;
-  position: absolute;
-  right: 2.5rem;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  z-index: 1000;
+#actions ul {
+  position: relative;
 }
 
 #actions li {
   position: relative;
+  display: inline-block;
+}
+
+#actions .icon-label {
+  display: none;
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff !important;
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-right: 0.5rem;
+  font-style: normal;
 }
 
 #actions li:hover .icon-label {
-  display: inline-block;
+  display: block;
 }
 
 .blog-post .post-date {
