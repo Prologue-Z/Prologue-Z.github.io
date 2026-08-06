@@ -1,0 +1,21 @@
+{{- $data := site.Data.honors }}
+{{- $group := .Get "group" | default "competitions" }}
+{{- $items := index $data $group }}
+{{- if $items }}
+<div class="honor-grid">
+  {{- range $items }}
+  <figure class="honor-card">
+    <a href="{{ .img }}" target="_blank" rel="noopener" title="点击查看大图">
+      <img src="{{ .img }}" alt="{{ .name }} {{ .year }}" loading="lazy">
+    </a>
+    <figcaption class="honor-info">
+      <p class="honor-name">{{ .name }}</p>
+      <p class="honor-meta">{{ .level }} · {{ .year }}</p>
+      {{- if .note }}
+      <p class="honor-note">{{ .note }}</p>
+      {{- end }}
+    </figcaption>
+  </figure>
+  {{- end }}
+</div>
+{{- end }}

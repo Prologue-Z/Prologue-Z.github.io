@@ -1,0 +1,29 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "张旭 (ZhangXu)"
+description = "机器人学博士生 @ 天津大学 | 连续体机器人、强化学习、运动规划"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  # logo = "images/logo.png"
+  # secondaryLogo = "img/secondary-logo.png"
+  # description = "My awesome website"
+  # copyright = "Copy, _right?_ :thinking_face:"
+
+[params.author]
+  name = "张旭 (ZhangXu)"
+  email = "tju_zhangxu@tju.edu.cn"
+  image = "images/avatar.jpg"
+  headline = "机器人学博士生"
+  bio = "天津大学机械工程博士生，研究方向：连续体机器人建模与控制、强化学习、机器人运动规划"
+  links = [
+    { email = "mailto:tju_zhangxu@tju.edu.cn" },
+    { github = "https://github.com/Prologue-Z" },
+    { orcid = "https://orcid.org/0000-0002-0845-693X" },
+    { "google-scholar" = "https://scholar.google.com/citations?user=oEPuCTIAAAAJ" },
+  ]

@@ -1,0 +1,355 @@
+/* ============ 页面通用布局 ============ */
+
+/* 主内容区与顶部导航栏拉开距离 */
+#main-content {
+  padding-top: 2.25rem;
+}
+
+/* 信息页页头：标题 + 描述 + 分隔线 */
+.page-header {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  padding-bottom: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.page-description {
+  margin: 0;
+  font-size: 0.98rem;
+  color: rgba(128, 128, 128, 0.95);
+}
+
+/* ============ 首页双栏布局（侧栏资料卡 + 主内容区） ============ */
+
+/* 主内容区区块分隔：每个 h2 区块上方留白 + 分隔线 */
+.homepage-main .prose > h2 {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.22);
+}
+
+.homepage-main .prose > h2:first-child {
+  margin-top: 0.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.homepage-main .prose {
+  line-height: 1.9;
+}
+
+/* 教育时间线在窄列内的排版修正 */
+.homepage-main .prose ol:has(> li > div > .bg-primary-500),
+.homepage-main .prose ol.border-s-2 {
+  margin-inline-start: 0.75rem;
+}
+
+/* 压缩时间线条目：减小内边距和条目的底部留白，消除大块空白 */
+.homepage-main .prose ol li > div > div.block {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+}
+
+.homepage-main .prose ol li > div > div.block > div:first-child h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+/* 时间线条目内容区：去掉主题默认的 mb-6 大空隙，行距收紧 */
+.homepage-main .prose ol li > div > div.block > div:last-child {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.homepage-main .prose ol li > div > div.block > div:last-child p {
+  margin: 0.25rem 0 0;
+  line-height: 1.6;
+}
+
+/* ============ 教育时间线（自研，flexbox 对齐） ============ */
+
+.edu-timeline {
+  margin: 1.25rem 0 0.5rem;
+}
+
+.edu-item {
+  display: flex;
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+.edu-marker-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 16px;
+  flex: 0 0 16px;
+}
+
+.edu-marker {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #374151;
+  margin-top: 5px;
+}
+
+.edu-line {
+  width: 2px;
+  flex: 1;
+  background: rgba(37, 99, 235, 0.35);
+  margin-top: 4px;
+}
+
+.edu-item:last-child .edu-line {
+  display: none;
+}
+
+.edu-content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 1.4rem;
+}
+
+.edu-item:last-child .edu-content {
+  padding-bottom: 0;
+}
+
+.edu-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.edu-degree {
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+.edu-years {
+  font-size: 0.82rem;
+  color: rgba(128, 128, 128, 0.95);
+  white-space: nowrap;
+}
+
+.edu-school {
+  margin-top: 0.15rem;
+  font-size: 0.92rem;
+  color: rgba(128, 128, 128, 0.95);
+}
+
+html.dark .edu-marker {
+  background: #0f172a;
+  border-color: #d1d5db;
+}
+
+html.dark .edu-line {
+  background: rgba(147, 197, 253, 0.45);
+}
+
+
+.homepage-wrap {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.homepage-sidebar {
+  flex: 0 0 300px;
+  max-width: 300px;
+  position: sticky;
+  top: 6rem;
+}
+
+.homepage-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 760px;
+}
+
+@media (max-width: 900px) {
+  .homepage-wrap {
+    flex-direction: column;
+    align-items: center;
+  }
+  .homepage-sidebar {
+    position: static;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 360px;
+  }
+  .homepage-main {
+    width: 100%;
+  }
+}
+
+/* 侧栏资料卡 */
+.profile-card {
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.profile-card img.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 0.75rem;
+  display: block;
+}
+
+.profile-card .profile-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+}
+
+.profile-card .profile-headline {
+  font-size: 0.95rem;
+  color: rgba(128, 128, 128, 0.95);
+  margin: 0 0 1rem;
+}
+
+.profile-card .profile-divider {
+  border: 0;
+  border-top: 1px solid rgba(128, 128, 128, 0.25);
+  margin: 1rem 0;
+}
+
+.profile-card .profile-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.profile-card .profile-contact li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.profile-card .profile-contact svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  opacity: 0.7;
+}
+
+.profile-card .profile-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+}
+
+.profile-card .profile-links a {
+  color: rgba(128, 128, 128, 0.85);
+  transition: color 0.2s;
+}
+
+.profile-card .profile-links a:hover {
+  color: #2563eb;
+}
+
+.profile-card .profile-links svg {
+  width: 1.2em;
+  height: 1.2em;
+  fill: currentColor;
+}
+
+/* ============ 荣誉墙 ============ */
+
+.honor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.25rem;
+}
+
+.honor-card {
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.25s;
+}
+
+.honor-card:hover {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+}
+
+.honor-card a {
+  display: block;
+  overflow: hidden;
+  background: rgba(128, 128, 128, 0.08);
+  /* 所有卡片统一为竖版证书比例，横版证书 contain 完整显示在框内 */
+  aspect-ratio: 3 / 4;
+}
+
+.honor-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.honor-card a:hover img {
+  transform: scale(1.04);
+}
+
+.honor-info {
+  padding: 0.75rem 0.9rem 0.9rem;
+}
+
+.honor-name {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.honor-meta {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(128, 128, 128, 0.95);
+}
+
+.honor-note {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  color: #2563eb;
+}
+
+@media (max-width: 640px) {
+  .honor-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .honor-name {
+    font-size: 0.8rem;
+  }
+}
+
+/* ============ 项目页图片：自适应缩小居中 ============ */
+
+img.project-figure {
+  display: block;
+  max-width: min(720px, 88%);
+  height: auto;
+  margin: 1.25rem auto;
+  border-radius: 8px;
+}

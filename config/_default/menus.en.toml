@@ -1,0 +1,68 @@
+# -- Main Menu --
+
+[[main]]
+  name = "Home"
+  pageRef = "/"
+  weight = 10
+
+[[main]]
+  name = "Publications"
+  pageRef = "/publications"
+  weight = 20
+
+[[main]]
+  name = "Projects"
+  pageRef = "/projects"
+  weight = 30
+
+[[main]]
+  name = "Patents"
+  pageRef = "/patents"
+  weight = 40
+
+[[main]]
+  name = "Honors"
+  pageRef = "/honors"
+  weight = 50
+
+[[main]]
+  name = "Blog"
+  pageRef = "/posts"
+  weight = 60
+
+[[main]]
+  name = "Other"
+  pageRef = "/other"
+  weight = 70
+
+# -- Footer Menu --
+
+[[footer]]
+  name = "Publications"
+  pageRef = "/publications"
+  weight = 10
+
+[[footer]]
+  name = "Projects"
+  pageRef = "/projects"
+  weight = 20
+
+[[footer]]
+  name = "Patents"
+  pageRef = "/patents"
+  weight = 30
+
+[[footer]]
+  name = "Honors"
+  pageRef = "/honors"
+  weight = 40
+
+[[footer]]
+  name = "Blog"
+  pageRef = "/posts"
+  weight = 50
+
+[[footer]]
+  name = "Other"
+  pageRef = "/other"
+  weight = 60

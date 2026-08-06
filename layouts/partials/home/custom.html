@@ -1,0 +1,33 @@
+{{- $author := site.Params.Author }}
+<div class="homepage-wrap">
+  <aside class="homepage-sidebar">
+    <div class="profile-card">
+      {{- with $author.image }}
+        {{- $img := resources.Get . }}
+        {{- if $img }}
+          {{- $size := int (math.Min $img.Width $img.Height) }}
+          {{- $square := $img.Crop (printf "%dx%d" $size $size) }}
+          <img class="profile-avatar" src="{{ $square.RelPermalink }}" alt="{{ $author.name | default site.Title }}" width="110" height="110">
+        {{- end }}
+      {{- end }}
+      <p class="profile-name">{{ $author.name | default site.Title }}</p>
+      {{- with $author.headline }}
+        <p class="profile-headline">{{ . | markdownify }}</p>
+      {{- end }}
+      <hr class="profile-divider">
+      <ul class="profile-contact">
+        <li><span>📍 中国 天津</span></li>
+        <li><span>天津大学 · 机械工程</span></li>
+      </ul>
+      <hr class="profile-divider">
+      <div class="profile-links">
+        {{ partial "author-links.html" . }}
+      </div>
+    </div>
+  </aside>
+  <main class="homepage-main">
+    <section class="prose dark:prose-invert">
+      {{ .Content }}
+    </section>
+  </main>
+</div>
